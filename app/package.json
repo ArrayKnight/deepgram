@@ -13,7 +13,7 @@
         "storybook": "start-storybook -s ./public",
         "storybook:build": "build-storybook -s ./public --output-dir=.library",
         "storybook:deploy": "storybook-to-ghpages --out=.library",
-        "test": "jest --silent",
+        "test": "jest --silent --passWithNoTests",
         "test:coverage": "jest --verbose --coverage --coverageDirectory=.coverage",
         "upgrade": "npm run upgrade:app --prefix .."
     },

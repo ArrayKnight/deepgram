@@ -2,13 +2,15 @@ import { ApolloServer } from 'apollo-server-express'
 import Express from 'express'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
+import { Container } from 'typedi'
 
 import './databases'
-import { TodoResolver } from './resolvers'
+import { AlbumResolver, TrackResolver, UserResolver } from './resolvers'
 
 void (async () => {
     const schema = await buildSchema({
-        resolvers: [TodoResolver],
+        resolvers: [AlbumResolver, TrackResolver, UserResolver],
+        container: Container,
     })
     const server = new ApolloServer({
         schema,

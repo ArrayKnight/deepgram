@@ -5,7 +5,7 @@
         "commit": "npm run commit --prefix ..",
         "lint": "eslint \"!(dist|node_modules)/**/*.[jt]s?(x)\"",
         "start": "dotenv -e ../.env -- nodemon --ignore src/databases --exec ts-node src/index.ts",
-        "test": "jest --silent",
+        "test": "jest --silent --passWithNoTests",
         "test:coverage": "jest --verbose --coverage --coverageDirectory=.coverage",
         "upgrade": "npm run upgrade:api --prefix .."
     },
@@ -17,6 +17,7 @@
         "nedb-promises": "^4.1.0",
         "reflect-metadata": "^0.1.13",
         "type-graphql": "^1.1.1",
+        "typedi": "^0.8.0",
         "uuid": "^8.3.2"
     },
     "devDependencies": {
