@@ -10,6 +10,7 @@
 /app/src/graphql/
 .env*
 .*ignore
+*.pdf
 
 # Generated
 .coverage/
