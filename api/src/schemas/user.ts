@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType, InputType } from 'type-graphql'
+import { Field, ID, ObjectType, ArgsType } from 'type-graphql'
 
 @ObjectType()
 export class User {
@@ -15,8 +15,26 @@ export class User {
     image?: string
 }
 
-@InputType()
-export class UserInput implements Partial<User> {
-    @Field()
-    email: string
+@ArgsType()
+export class UsersFieldsArgs {
+    @Field(() => [String], { nullable: true })
+    id?: string | string[]
+
+    @Field(() => [String], { nullable: true })
+    name?: string | string[]
+
+    @Field(() => [String], { nullable: true })
+    email?: string | string[]
+}
+
+@ArgsType()
+export class UserFieldsArgs {
+    @Field({ nullable: true })
+    id?: string
+
+    @Field({ nullable: true })
+    name?: string
+
+    @Field({ nullable: true })
+    email?: string
 }

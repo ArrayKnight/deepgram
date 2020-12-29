@@ -1,5 +1,9 @@
 import { MaybeArray } from '~/types'
 
+export function isArray(value: unknown): value is Array<unknown> {
+    return Array.isArray(value)
+}
+
 export function isNil(value: unknown): value is null | undefined {
     return isNull(value) || isUndefined(value)
 }
