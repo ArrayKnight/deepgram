@@ -3,9 +3,10 @@ import Express from 'express'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 
+import './databases'
 import { TodoResolver } from './resolvers'
 
-async function main(): Promise<void> {
+void (async () => {
     const schema = await buildSchema({
         resolvers: [TodoResolver],
     })
@@ -17,10 +18,6 @@ async function main(): Promise<void> {
     server.applyMiddleware({ app })
 
     app.listen(process.env.SERVER_PORT, () =>
-        console.log(
-            `Server is running on http://localhost:${process.env.SERVER_PORT}/graphql`,
-        ),
+        console.log(`Server is running on ${process.env.GRAPHQL_ENDPOINT}`),
     )
-}
-
-void main()
+})()

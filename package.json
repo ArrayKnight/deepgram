@@ -12,7 +12,7 @@
         "lint:api": "npm run lint --prefix api",
         "lint:app": "npm run lint --prefix app",
         "start": "run-p start:*",
-        "start:api": "dotenv -- npm run start --prefix api",
+        "start:api": "npm run start --prefix api",
         "start:app": "dotenv -- cross-var wait-on %WAIT_ON_ENDPOINT% --config=.waitonrc.json && npm run start --prefix app",
         "test": "run-p test:*",
         "test:api": "npm run test --prefix api",
