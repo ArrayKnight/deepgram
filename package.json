@@ -1,0 +1,64 @@
+{
+    "name": "deepgram",
+    "version": "0.0.0-development",
+    "description": "Audio projects app",
+    "scripts": {
+        "postinstall": "run-p install:*",
+        "install:api": "cd api && npm i",
+        "install:app": "cd app && npm i",
+        "precommit": "run-p lint test",
+        "commit": "git add -i && npx git-cz",
+        "lint": "run-p lint:*",
+        "lint:api": "npm run lint --prefix api",
+        "lint:app": "npm run lint --prefix app",
+        "start": "run-p start:*",
+        "start:api": "dotenv -- npm run start --prefix api",
+        "start:app": "dotenv -- cross-var wait-on %WAIT_ON_ENDPOINT% --config=.waitonrc.json && npm run start --prefix app",
+        "test": "run-p test:*",
+        "test:api": "npm run test --prefix api",
+        "test:app": "npm run test --prefix app",
+        "upgrade": "run-s upgrade:*",
+        "upgrade:root": "npm-check --update",
+        "upgrade:api": "npm-check api --update",
+        "upgrade:app": "npm-check app --update"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+            "post-commit": "git push -u origin $(git rev-parse --abbrev-ref HEAD)"
+        }
+    },
+    "lint-staged": {
+        "**/*.{ts,tsx,json,md}": [
+            "prettier --write"
+        ]
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^11.0.0",
+        "@commitlint/config-conventional": "^11.0.0",
+        "cross-var": "^1.1.0",
+        "dotenv-cli": "^4.0.0",
+        "husky": "^4.3.6",
+        "lint-staged": "^10.5.2",
+        "npm-check": "^5.9.2",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.2.1",
+        "wait-on": "^5.2.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ArrayKnight/deepgram.git"
+    },
+    "author": "Ray Knight <array.knight+github@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ArrayKnight/deepgram/issues"
+    },
+    "homepage": "https://github.com/ArrayKnight/deepgram#readme"
+}

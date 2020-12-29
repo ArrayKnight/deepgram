@@ -1,0 +1,22 @@
+# IDE
+.code-workspace/
+.idea/
+.settings/
+.vscode/
+
+# Local
+/app/public/
+/app/src/assets/
+/app/src/graphql/
+.env*
+.*ignore
+
+# Generated
+.coverage/
+.library/
+node_modules/
+package-lock.json
+yarn.lock
+
+# Logs
+*.log*

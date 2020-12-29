@@ -1,0 +1,5 @@
+schema: ${GRAPHQL_ENDPOINT}
+generates:
+    src/graphql/schema.graphql:
+        plugins:
+            - schema-ast
