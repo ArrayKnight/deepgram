@@ -4,7 +4,9 @@ export function convertFieldsArgsToQuery(
     return Object.entries(fields).reduce(
         (query: Record<string, unknown>, [key, value]) => {
             if (!isNil(value)) {
-                query[key] = isArray(value) ? { $in: value } : value
+                query[key === 'id' ? '_id' : key] = isArray(value)
+                    ? { $in: value }
+                    : value
             }
 
             return query
