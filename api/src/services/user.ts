@@ -2,7 +2,12 @@ import { Service } from 'typedi'
 
 import { convertFieldsArgsToQuery } from '../common'
 import { users } from '../databases'
-import { User, UserFieldsArgs, UsersFieldsArgs } from '../schemas'
+import {
+    User,
+    UserFieldsArgs,
+    UsersFieldsArgs,
+    UserUpsertInput,
+} from '../schemas'
 
 @Service()
 export class UserService {
@@ -22,8 +27,8 @@ export class UserService {
         return await users.findOne<User>(query)
     }
 
-    async insert(user: Omit<User, '_id'>): Promise<User> {
-        return await users.insert<Omit<User, '_id'>>(user)
+    async insert(user: UserUpsertInput): Promise<User> {
+        return await users.insert<UserUpsertInput>(user)
     }
 
     async update({ _id, name, image }: User): Promise<User> {

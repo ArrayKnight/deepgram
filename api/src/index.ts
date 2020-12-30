@@ -14,6 +14,21 @@ void (async () => {
     })
     const server = new ApolloServer({
         schema,
+        context: (ctx) => {
+            const requestId = Math.floor(
+                Math.random() * Number.MAX_SAFE_INTEGER,
+            )
+            const container = Container.of(requestId)
+            const context = {
+                requestId,
+                container,
+                userId: ctx.req.headers.authorization,
+            }
+
+            container.set('context', context)
+
+            return context
+        },
     })
     const app = Express()
 

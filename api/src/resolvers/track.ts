@@ -16,11 +16,30 @@ export class TrackResolver {
         private userService: UserService,
     ) {}
 
+    // Fields
     @FieldResolver(() => ID)
     id(@Root() track: Track): string {
         return track._id
     }
 
+    @FieldResolver(() => String, { nullable: true })
+    createdAt(@Root() track: Track): string | null {
+        return track.createdAt ? track.createdAt.toISOString() : null
+    }
+
+    @FieldResolver(() => String, { nullable: true })
+    updatedAt(@Root() track: Track): string | null {
+        return track.updatedAt ? track.updatedAt.toISOString() : null
+    }
+
+    @FieldResolver(() => User, { nullable: true })
+    async uploadedBy(@Root() track: Track): Promise<User | null> {
+        return await this.userService.getOne({ id: track.uploadedBy })
+    }
+
+    // Mutations
+
+    // Queries
     @Query(() => [Track])
     async tracks(
         @Args() fields: TracksFieldsArgs = {},
@@ -32,10 +51,5 @@ export class TrackResolver {
     @Query(() => Track, { nullable: true })
     async track(@Args() fields: TrackFieldsArgs): Promise<Track | null> {
         return await this.trackService.getOne(fields)
-    }
-
-    @FieldResolver(() => User, { nullable: true })
-    async uploadedBy(@Root() track: Track): Promise<User | null> {
-        return await this.userService.getOne({ id: track.uploadedBy })
     }
 }

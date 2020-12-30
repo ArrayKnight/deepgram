@@ -1,19 +1,52 @@
 type Query {
-  todos: [Todo!]
+  albums(id: [String!], createdBy: [String!], name: [String!]): [Album!]!
+  album(id: String, createdBy: String, name: String): Album
+  tracks(maxDuration: Float, id: [String!], uploadedBy: [String!], albumId: [String!], fileName: [String!]): [Track!]!
+  track(id: String, uploadedBy: String, albumId: String, fileName: String): Track
+  users(id: [String!], name: [String!], email: [String!]): [User!]!
+  user(id: String, name: String, email: String): User
 }
 
-type Todo {
-  id: String!
-  title: String!
-  description: String!
-  status: Boolean!
+type Album {
+  createdAt: String!
+  updatedAt: String!
+  name: String!
+  id: ID!
+  createdBy: User
+  modifiedBy: [User!]!
+  tracks: [Track!]!
+}
+
+type User {
+  name: String
+  email: String!
+  image: String
+  id: ID!
+}
+
+type Track {
+  createdAt: String!
+  updatedAt: String!
+  albumId: String!
+  fileName: String!
+  fileType: String!
+  fileSize: Int!
+  duration: Float!
+  id: ID!
+  uploadedBy: User
 }
 
 type Mutation {
-  addTodo(todoInput: TodoInput!): Todo!
+  insertAlbum(album: AlbumInsertInput!): Album!
+  upsertUser(user: UserUpsertInput!): User!
 }
 
-input TodoInput {
-  title: String!
-  description: String!
+input AlbumInsertInput {
+  name: String!
+}
+
+input UserUpsertInput {
+  name: String
+  email: String!
+  image: String
 }

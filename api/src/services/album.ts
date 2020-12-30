@@ -2,7 +2,12 @@ import { Service } from 'typedi'
 
 import { convertFieldsArgsToQuery } from '../common'
 import { albums } from '../databases'
-import { Album, AlbumFieldsArgs, AlbumsFieldsArgs } from '../schemas'
+import {
+    Album,
+    AlbumFieldsArgs,
+    AlbumInsertInput,
+    AlbumsFieldsArgs,
+} from '../schemas'
 
 @Service()
 export class AlbumService {
@@ -20,5 +25,12 @@ export class AlbumService {
         const query = convertFieldsArgsToQuery({ ...fields })
 
         return await albums.findOne<Album>(query)
+    }
+
+    async insert(album: AlbumInsertInput, creatorId: string): Promise<Album> {
+        return await albums.insert({
+            ...album,
+            createdBy: creatorId,
+        })
     }
 }

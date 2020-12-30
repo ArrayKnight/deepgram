@@ -1,7 +1,9 @@
 import { Field, ObjectType, ArgsType, InputType } from 'type-graphql'
 
+import { Document } from '../types'
+
 @ObjectType()
-export class User {
+export class User implements Document {
     _id: string
 
     @Field({ nullable: true })
@@ -39,7 +41,7 @@ export class UserFieldsArgs {
 }
 
 @InputType()
-export class UserInput implements Partial<User> {
+export class UserUpsertInput implements Partial<User> {
     @Field({ nullable: true })
     name?: string
 

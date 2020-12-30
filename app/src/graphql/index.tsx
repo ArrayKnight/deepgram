@@ -15,77 +15,163 @@ export type Scalars = {
 
 export type Query = {
   __typename: 'Query';
-  todos: Maybe<Array<Todo>>;
+  albums: Array<Album>;
+  album: Maybe<Album>;
+  tracks: Array<Track>;
+  track: Maybe<Track>;
+  users: Array<User>;
+  user: Maybe<User>;
 };
 
-export type Todo = {
-  __typename: 'Todo';
-  id: Scalars['String'];
-  title: Scalars['String'];
-  description: Scalars['String'];
-  status: Scalars['Boolean'];
+
+export type QueryAlbumsArgs = {
+  id: Maybe<Array<Scalars['String']>>;
+  createdBy: Maybe<Array<Scalars['String']>>;
+  name: Maybe<Array<Scalars['String']>>;
+};
+
+
+export type QueryAlbumArgs = {
+  id: Maybe<Scalars['String']>;
+  createdBy: Maybe<Scalars['String']>;
+  name: Maybe<Scalars['String']>;
+};
+
+
+export type QueryTracksArgs = {
+  maxDuration: Maybe<Scalars['Float']>;
+  id: Maybe<Array<Scalars['String']>>;
+  uploadedBy: Maybe<Array<Scalars['String']>>;
+  albumId: Maybe<Array<Scalars['String']>>;
+  fileName: Maybe<Array<Scalars['String']>>;
+};
+
+
+export type QueryTrackArgs = {
+  id: Maybe<Scalars['String']>;
+  uploadedBy: Maybe<Scalars['String']>;
+  albumId: Maybe<Scalars['String']>;
+  fileName: Maybe<Scalars['String']>;
+};
+
+
+export type QueryUsersArgs = {
+  id: Maybe<Array<Scalars['String']>>;
+  name: Maybe<Array<Scalars['String']>>;
+  email: Maybe<Array<Scalars['String']>>;
+};
+
+
+export type QueryUserArgs = {
+  id: Maybe<Scalars['String']>;
+  name: Maybe<Scalars['String']>;
+  email: Maybe<Scalars['String']>;
+};
+
+export type Album = {
+  __typename: 'Album';
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  name: Scalars['String'];
+  id: Scalars['ID'];
+  createdBy: Maybe<User>;
+  modifiedBy: Array<User>;
+  tracks: Array<Track>;
+};
+
+export type User = {
+  __typename: 'User';
+  name: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  image: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+};
+
+export type Track = {
+  __typename: 'Track';
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  albumId: Scalars['String'];
+  fileName: Scalars['String'];
+  fileType: Scalars['String'];
+  fileSize: Scalars['Int'];
+  duration: Scalars['Float'];
+  id: Scalars['ID'];
+  uploadedBy: Maybe<User>;
 };
 
 export type Mutation = {
   __typename: 'Mutation';
-  addTodo: Todo;
+  insertAlbum: Album;
+  upsertUser: User;
 };
 
 
-export type MutationAddTodoArgs = {
-  todoInput: TodoInput;
+export type MutationInsertAlbumArgs = {
+  album: AlbumInsertInput;
 };
 
-export type TodoInput = {
-  title: Scalars['String'];
-  description: Scalars['String'];
+
+export type MutationUpsertUserArgs = {
+  user: UserUpsertInput;
 };
 
-export type TodosQueryVariables = Exact<{ [key: string]: never; }>;
+export type AlbumInsertInput = {
+  name: Scalars['String'];
+};
+
+export type UserUpsertInput = {
+  name: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  image: Maybe<Scalars['String']>;
+};
+
+export type SignUpInMutationVariables = Exact<{
+  user: UserUpsertInput;
+}>;
 
 
-export type TodosQuery = (
-  { __typename: 'Query' }
-  & { todos: Maybe<Array<(
-    { __typename: 'Todo' }
-    & Pick<Todo, 'id' | 'title'>
-  )>> }
+export type SignUpInMutation = (
+  { __typename: 'Mutation' }
+  & { user: (
+    { __typename: 'User' }
+    & Pick<User, 'id'>
+  ) }
 );
 
 
-export const TodosDocument = gql`
-    query Todos {
-  todos {
+export const SignUpInDocument = gql`
+    mutation SignUpIn($user: UserUpsertInput!) {
+  user: upsertUser(user: $user) {
     id
-    title
   }
 }
     `;
+export type SignUpInMutationFn = Apollo.MutationFunction<SignUpInMutation, SignUpInMutationVariables>;
 
 /**
- * __useTodosQuery__
+ * __useSignUpInMutation__
  *
- * To run a query within a React component, call `useTodosQuery` and pass it any options that fit your needs.
- * When your component renders, `useTodosQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useSignUpInMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignUpInMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useTodosQuery({
+ * const [signUpInMutation, { data, loading, error }] = useSignUpInMutation({
  *   variables: {
+ *      user: // value for 'user'
  *   },
  * });
  */
-export function useTodosQuery(baseOptions?: Apollo.QueryHookOptions<TodosQuery, TodosQueryVariables>) {
-        return Apollo.useQuery<TodosQuery, TodosQueryVariables>(TodosDocument, baseOptions);
+export function useSignUpInMutation(baseOptions?: Apollo.MutationHookOptions<SignUpInMutation, SignUpInMutationVariables>) {
+        return Apollo.useMutation<SignUpInMutation, SignUpInMutationVariables>(SignUpInDocument, baseOptions);
       }
-export function useTodosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TodosQuery, TodosQueryVariables>) {
-          return Apollo.useLazyQuery<TodosQuery, TodosQueryVariables>(TodosDocument, baseOptions);
-        }
-export type TodosQueryHookResult = ReturnType<typeof useTodosQuery>;
-export type TodosLazyQueryHookResult = ReturnType<typeof useTodosLazyQuery>;
-export type TodosQueryResult = Apollo.QueryResult<TodosQuery, TodosQueryVariables>;
+export type SignUpInMutationHookResult = ReturnType<typeof useSignUpInMutation>;
+export type SignUpInMutationResult = Apollo.MutationResult<SignUpInMutation>;
+export type SignUpInMutationOptions = Apollo.BaseMutationOptions<SignUpInMutation, SignUpInMutationVariables>;
 
       export interface PossibleTypesResultData {
         possibleTypes: {

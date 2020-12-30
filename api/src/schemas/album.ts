@@ -1,15 +1,12 @@
-import { ArgsType, Field, ObjectType } from 'type-graphql'
+import { ArgsType, Field, InputType, ObjectType } from 'type-graphql'
+
+import { Document } from '../types'
 
 @ObjectType()
-export class Album {
+export class Album implements Document {
     _id: string
-
-    @Field()
-    createdAt: string
-
-    @Field()
-    updatedAt: string
-
+    createdAt?: Date
+    updatedAt?: Date
     createdBy: string
 
     @Field()
@@ -38,4 +35,25 @@ export class AlbumFieldsArgs {
 
     @Field({ nullable: true })
     name?: string
+}
+
+@InputType()
+export class AlbumInsertInput {
+    @Field()
+    name: string
+}
+
+@InputType()
+export class AlbumUpdateInput {
+    @Field()
+    id: string
+
+    @Field()
+    name: string
+}
+
+@InputType()
+export class AlbumRemoveInput {
+    @Field()
+    id: string
 }

@@ -1,13 +1,25 @@
-import { Args, FieldResolver, ID, Query, Resolver, Root } from 'type-graphql'
+import {
+    Arg,
+    Args,
+    Ctx,
+    FieldResolver,
+    ID,
+    Mutation,
+    Query,
+    Resolver,
+    Root,
+} from 'type-graphql'
 
 import {
     Album,
     AlbumFieldsArgs,
+    AlbumInsertInput,
     AlbumsFieldsArgs,
     Track,
     User,
 } from '../schemas'
 import { AlbumService, TrackService, UserService } from '../services'
+import type { Context } from '../types'
 
 @Resolver(() => Album)
 export class AlbumResolver {
@@ -17,9 +29,20 @@ export class AlbumResolver {
         private userService: UserService,
     ) {}
 
+    // Fields
     @FieldResolver(() => ID)
     id(@Root() album: Album): string {
         return album._id
+    }
+
+    @FieldResolver(() => String, { nullable: true })
+    createdAt(@Root() album: Album): string | null {
+        return album.createdAt ? album.createdAt.toISOString() : null
+    }
+
+    @FieldResolver(() => String, { nullable: true })
+    updatedAt(@Root() album: Album): string | null {
+        return album.updatedAt ? album.updatedAt.toISOString() : null
     }
 
     @FieldResolver(() => User, { nullable: true })
@@ -43,6 +66,20 @@ export class AlbumResolver {
         return await this.trackService.getMany({ albumId: album._id })
     }
 
+    // Mutations
+    @Mutation(() => Album)
+    async insertAlbum(
+        @Arg('album') album: AlbumInsertInput,
+        @Ctx() ctx: Context,
+    ): Promise<Album> {
+        if (!ctx.userId) {
+            throw new Error('An authenticated user is required')
+        }
+
+        return await this.albumService.insert(album, ctx.userId)
+    }
+
+    // Queries
     @Query(() => [Album])
     async albums(@Args() fields: AlbumsFieldsArgs = {}): Promise<Album[]> {
         return await this.albumService.getMany(fields)

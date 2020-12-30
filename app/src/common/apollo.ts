@@ -8,20 +8,22 @@ import merge from 'deepmerge'
 import fetch from 'isomorphic-unfetch'
 import { useMemo } from 'react'
 
-import introspectionResults from '~/graphql'
+import introspectionResults, { Maybe } from '~/graphql'
 import type { ApolloCache, ApolloClient } from '~/types'
 import { GRAPHQL_ENDPOINT, SSR } from './constants'
+import { isUndefined } from '~/common/utilities'
 
 let client: ApolloClient
+let authId: Maybe<string>
 
 const httpLink = createHttpLink({
-    uri: SSR ? GRAPHQL_ENDPOINT : `${window.location.origin}/graphql`,
+    uri: SSR ? GRAPHQL_ENDPOINT : `${window.location.origin}/api/graphql`,
     fetch,
 })
 const authLink = setContext((_, { headers }) => ({
     headers: {
         ...((headers || {}) as Record<string, string>),
-        // Authorization
+        authorization: `Bearer ${authId}`,
     },
 }))
 
@@ -36,7 +38,14 @@ function createApolloClient(): ApolloClient {
     })
 }
 
-export function initializeApollo(initialState?: ApolloCache): ApolloClient {
+export function getApolloClient(
+    initialState?: ApolloCache,
+    userId?: Maybe<string>,
+): ApolloClient {
+    if (!isUndefined(userId)) {
+        authId = userId
+    }
+
     const _client = !client ? createApolloClient() : client
 
     if (initialState) {
@@ -54,6 +63,12 @@ export function initializeApollo(initialState?: ApolloCache): ApolloClient {
     return _client
 }
 
-export function useApollo(initialState?: ApolloCache): ApolloClient {
-    return useMemo(() => initializeApollo(initialState), [initialState])
+export function useApollo(
+    initialState?: ApolloCache,
+    userId?: Maybe<string>,
+): ApolloClient {
+    return useMemo(() => getApolloClient(initialState, userId), [
+        initialState,
+        userId,
+    ])
 }

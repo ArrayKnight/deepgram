@@ -1,15 +1,12 @@
 import { ArgsType, Field, Int, ObjectType } from 'type-graphql'
 
+import { Document } from '../types'
+
 @ObjectType()
-export class Track {
+export class Track implements Document {
     _id: string
-
-    @Field()
-    createdAt: string
-
-    @Field()
-    updatedAt: string
-
+    createdAt?: Date
+    updatedAt?: Date
     uploadedBy: string
 
     @Field()
