@@ -1,4 +1,4 @@
-import { Args, FieldResolver, Query, Resolver, Root } from 'type-graphql'
+import { Args, FieldResolver, ID, Query, Resolver, Root } from 'type-graphql'
 
 import {
     Album,
@@ -17,14 +17,9 @@ export class AlbumResolver {
         private userService: UserService,
     ) {}
 
-    @Query(() => [Album])
-    async albums(@Args() fields: AlbumsFieldsArgs = {}): Promise<Album[]> {
-        return await this.albumService.getMany(fields)
-    }
-
-    @Query(() => Album, { nullable: true })
-    async album(@Args() fields: AlbumFieldsArgs): Promise<Album | null> {
-        return await this.albumService.getOne(fields)
+    @FieldResolver(() => ID)
+    id(@Root() album: Album): string {
+        return album._id
     }
 
     @FieldResolver(() => User, { nullable: true })
@@ -45,6 +40,16 @@ export class AlbumResolver {
 
     @FieldResolver(() => [Track])
     async tracks(@Root() album: Album): Promise<Track[]> {
-        return await this.trackService.getMany({ albumId: album.id })
+        return await this.trackService.getMany({ albumId: album._id })
+    }
+
+    @Query(() => [Album])
+    async albums(@Args() fields: AlbumsFieldsArgs = {}): Promise<Album[]> {
+        return await this.albumService.getMany(fields)
+    }
+
+    @Query(() => Album, { nullable: true })
+    async album(@Args() fields: AlbumFieldsArgs): Promise<Album | null> {
+        return await this.albumService.getOne(fields)
     }
 }

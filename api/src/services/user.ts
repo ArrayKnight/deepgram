@@ -22,13 +22,13 @@ export class UserService {
         return await users.findOne<User>(query)
     }
 
-    async insert(user: User): Promise<User> {
-        return await users.insert<User>(user)
+    async insert(user: Omit<User, '_id'>): Promise<User> {
+        return await users.insert<Omit<User, '_id'>>(user)
     }
 
-    async update({ id, name, image }: User): Promise<User> {
+    async update({ _id, name, image }: User): Promise<User> {
         return await users.update<User>(
-            { id },
+            { _id },
             { name, image },
             {
                 returnUpdatedDocs: true,

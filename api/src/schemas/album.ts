@@ -1,9 +1,8 @@
-import { ArgsType, Field, ID, ObjectType } from 'type-graphql'
+import { ArgsType, Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class Album {
-    @Field(() => ID)
-    id: string
+    _id: string
 
     @Field()
     createdAt: string

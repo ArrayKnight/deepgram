@@ -1,4 +1,4 @@
-import { Args, FieldResolver, Query, Resolver, Root } from 'type-graphql'
+import { Args, FieldResolver, ID, Query, Resolver, Root } from 'type-graphql'
 
 import {
     Track,
@@ -15,6 +15,11 @@ export class TrackResolver {
         private trackService: TrackService,
         private userService: UserService,
     ) {}
+
+    @FieldResolver(() => ID)
+    id(@Root() track: Track): string {
+        return track._id
+    }
 
     @Query(() => [Track])
     async tracks(

@@ -1,5 +1,13 @@
-import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql'
-import { v4 as uuid } from 'uuid'
+import {
+    Arg,
+    Args,
+    FieldResolver,
+    ID,
+    Mutation,
+    Query,
+    Resolver,
+    Root,
+} from 'type-graphql'
 
 import { User, UserFieldsArgs, UserInput, UsersFieldsArgs } from '../schemas'
 import { UserService } from '../services'
@@ -7,6 +15,11 @@ import { UserService } from '../services'
 @Resolver(() => User)
 export class UserResolver {
     constructor(private userService: UserService) {}
+
+    @FieldResolver(() => ID)
+    id(@Root() user: User): string {
+        return user._id
+    }
 
     @Query(() => [User])
     async users(@Args() fields: UsersFieldsArgs): Promise<User[]> {
@@ -33,7 +46,6 @@ export class UserResolver {
         }
 
         return await this.userService.insert({
-            id: uuid(),
             name,
             email,
             image,

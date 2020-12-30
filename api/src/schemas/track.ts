@@ -1,9 +1,8 @@
-import { ArgsType, Field, ID, Int, ObjectType } from 'type-graphql'
+import { ArgsType, Field, Int, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class Track {
-    @Field(() => ID)
-    id: string
+    _id: string
 
     @Field()
     createdAt: string

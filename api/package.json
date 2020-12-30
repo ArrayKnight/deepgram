@@ -4,7 +4,7 @@
     "scripts": {
         "commit": "npm run commit --prefix ..",
         "lint": "eslint \"!(dist|node_modules)/**/*.[jt]s?(x)\"",
-        "start": "dotenv -e ../.env -- nodemon --ignore src/databases --exec ts-node src/index.ts",
+        "start": "dotenv -e ../.env -- nodemon --ignore src/databases/*.json --exec ts-node src/index.ts",
         "test": "jest --silent --passWithNoTests",
         "test:coverage": "jest --verbose --coverage --coverageDirectory=.coverage",
         "upgrade": "npm run upgrade:api --prefix .."
@@ -17,15 +17,14 @@
         "nedb-promises": "^4.1.0",
         "reflect-metadata": "^0.1.13",
         "type-graphql": "^1.1.1",
-        "typedi": "^0.8.0",
-        "uuid": "^8.3.2"
+        "typedi": "^0.8.0"
     },
     "devDependencies": {
         "@types/express": "^4.17.9",
         "@types/jest": "^26.0.19",
         "@types/jest-expect-message": "^1.0.3",
+        "@types/nedb": "^1.8.11",
         "@types/node": "^14.14.16",
-        "@types/uuid": "^8.3.0",
         "@typescript-eslint/eslint-plugin": "^4.11.1",
         "@typescript-eslint/parser": "^4.11.1",
         "dotenv-cli": "^4.0.0",
