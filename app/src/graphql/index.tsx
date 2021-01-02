@@ -153,6 +153,76 @@ export type UpsertUserMutation = (
   ) }
 );
 
+export type AlbumQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type AlbumQuery = (
+  { __typename: 'Query' }
+  & { album?: Maybe<(
+    { __typename: 'Album' }
+    & Pick<Album, 'id' | 'name' | 'createdAt'>
+    & { createdBy?: Maybe<(
+      { __typename: 'User' }
+      & Pick<User, 'id' | 'name' | 'email'>
+    )> }
+  )> }
+);
+
+export type AlbumsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AlbumsQuery = (
+  { __typename: 'Query' }
+  & { albums: Array<(
+    { __typename: 'Album' }
+    & Pick<Album, 'id' | 'name' | 'createdAt'>
+    & { createdBy?: Maybe<(
+      { __typename: 'User' }
+      & Pick<User, 'id' | 'name' | 'email'>
+    )> }
+  )> }
+);
+
+export type TrackQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type TrackQuery = (
+  { __typename: 'Query' }
+  & { track?: Maybe<(
+    { __typename: 'Track' }
+    & Pick<Track, 'id' | 'createdAt' | 'fileName' | 'fileSize' | 'duration'>
+    & { album?: Maybe<(
+      { __typename: 'Album' }
+      & Pick<Album, 'id' | 'name'>
+    )>, uploadedBy?: Maybe<(
+      { __typename: 'User' }
+      & Pick<User, 'id' | 'name' | 'email'>
+    )> }
+  )> }
+);
+
+export type TracksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TracksQuery = (
+  { __typename: 'Query' }
+  & { tracks: Array<(
+    { __typename: 'Track' }
+    & Pick<Track, 'id' | 'createdAt' | 'fileName' | 'fileSize' | 'duration'>
+    & { album?: Maybe<(
+      { __typename: 'Album' }
+      & Pick<Album, 'id' | 'name'>
+    )>, uploadedBy?: Maybe<(
+      { __typename: 'User' }
+      & Pick<User, 'id' | 'name' | 'email'>
+    )> }
+  )> }
+);
+
 
 export const UpsertUserDocument = gql`
     mutation UpsertUser($user: UserUpsertInput!) {
@@ -189,6 +259,176 @@ export function useUpsertUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpsertUserMutationHookResult = ReturnType<typeof useUpsertUserMutation>;
 export type UpsertUserMutationResult = Apollo.MutationResult<UpsertUserMutation>;
 export type UpsertUserMutationOptions = Apollo.BaseMutationOptions<UpsertUserMutation, UpsertUserMutationVariables>;
+export const AlbumDocument = gql`
+    query Album($id: String!) {
+  album(id: $id) {
+    id
+    name
+    createdAt
+    createdBy {
+      id
+      name
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useAlbumQuery__
+ *
+ * To run a query within a React component, call `useAlbumQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAlbumQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAlbumQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAlbumQuery(baseOptions: Apollo.QueryHookOptions<AlbumQuery, AlbumQueryVariables>) {
+        return Apollo.useQuery<AlbumQuery, AlbumQueryVariables>(AlbumDocument, baseOptions);
+      }
+export function useAlbumLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AlbumQuery, AlbumQueryVariables>) {
+          return Apollo.useLazyQuery<AlbumQuery, AlbumQueryVariables>(AlbumDocument, baseOptions);
+        }
+export type AlbumQueryHookResult = ReturnType<typeof useAlbumQuery>;
+export type AlbumLazyQueryHookResult = ReturnType<typeof useAlbumLazyQuery>;
+export type AlbumQueryResult = Apollo.QueryResult<AlbumQuery, AlbumQueryVariables>;
+export const AlbumsDocument = gql`
+    query Albums {
+  albums {
+    id
+    name
+    createdAt
+    createdBy {
+      id
+      name
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useAlbumsQuery__
+ *
+ * To run a query within a React component, call `useAlbumsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAlbumsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAlbumsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAlbumsQuery(baseOptions?: Apollo.QueryHookOptions<AlbumsQuery, AlbumsQueryVariables>) {
+        return Apollo.useQuery<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, baseOptions);
+      }
+export function useAlbumsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AlbumsQuery, AlbumsQueryVariables>) {
+          return Apollo.useLazyQuery<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, baseOptions);
+        }
+export type AlbumsQueryHookResult = ReturnType<typeof useAlbumsQuery>;
+export type AlbumsLazyQueryHookResult = ReturnType<typeof useAlbumsLazyQuery>;
+export type AlbumsQueryResult = Apollo.QueryResult<AlbumsQuery, AlbumsQueryVariables>;
+export const TrackDocument = gql`
+    query Track($id: String!) {
+  track(id: $id) {
+    id
+    createdAt
+    fileName
+    fileSize
+    duration
+    album {
+      id
+      name
+    }
+    uploadedBy {
+      id
+      name
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useTrackQuery__
+ *
+ * To run a query within a React component, call `useTrackQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTrackQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTrackQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useTrackQuery(baseOptions: Apollo.QueryHookOptions<TrackQuery, TrackQueryVariables>) {
+        return Apollo.useQuery<TrackQuery, TrackQueryVariables>(TrackDocument, baseOptions);
+      }
+export function useTrackLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TrackQuery, TrackQueryVariables>) {
+          return Apollo.useLazyQuery<TrackQuery, TrackQueryVariables>(TrackDocument, baseOptions);
+        }
+export type TrackQueryHookResult = ReturnType<typeof useTrackQuery>;
+export type TrackLazyQueryHookResult = ReturnType<typeof useTrackLazyQuery>;
+export type TrackQueryResult = Apollo.QueryResult<TrackQuery, TrackQueryVariables>;
+export const TracksDocument = gql`
+    query Tracks {
+  tracks {
+    id
+    createdAt
+    fileName
+    fileSize
+    duration
+    album {
+      id
+      name
+    }
+    uploadedBy {
+      id
+      name
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useTracksQuery__
+ *
+ * To run a query within a React component, call `useTracksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTracksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTracksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTracksQuery(baseOptions?: Apollo.QueryHookOptions<TracksQuery, TracksQueryVariables>) {
+        return Apollo.useQuery<TracksQuery, TracksQueryVariables>(TracksDocument, baseOptions);
+      }
+export function useTracksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TracksQuery, TracksQueryVariables>) {
+          return Apollo.useLazyQuery<TracksQuery, TracksQueryVariables>(TracksDocument, baseOptions);
+        }
+export type TracksQueryHookResult = ReturnType<typeof useTracksQuery>;
+export type TracksLazyQueryHookResult = ReturnType<typeof useTracksLazyQuery>;
+export type TracksQueryResult = Apollo.QueryResult<TracksQuery, TracksQueryVariables>;
 
       export interface PossibleTypesResultData {
         possibleTypes: {

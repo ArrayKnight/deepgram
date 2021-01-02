@@ -10,19 +10,16 @@ import type { NextRouter } from 'next/router'
 import React, { ReactElement, PropsWithChildren, useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { SSR_BREAKPOINT, theme } from '~/common'
-import type { BreakpointKey } from '~/types'
+import { theme } from '~/common'
 
 interface MediaOptions {
-    breakpoint?: BreakpointKey
     mediaQuery?: string
 }
 
 export const matchMediaMock = new MatchMediaMock()
 
 export function mockMatchMedia({
-    breakpoint = SSR_BREAKPOINT,
-    mediaQuery = breakpoint, // TODO
+    mediaQuery = '(min-width: 1px)',
 }: MediaOptions): void {
     matchMediaMock.useMediaQuery(mediaQuery)
 }
@@ -35,7 +32,7 @@ type DefaultRenderParams = Parameters<typeof defaultRender>
 type RenderUI = DefaultRenderParams[0]
 
 export type RenderOptions = DefaultRenderParams[1] & {
-    breakpoint?: BreakpointKey
+    mediaQuery?: string
     router?: Partial<NextRouter>
 }
 
@@ -69,7 +66,7 @@ export function render(
     ui: RenderUI,
     {
         wrapper = NoopWrapper,
-        breakpoint = SSR_BREAKPOINT,
+        mediaQuery = '(min-width: 1px)',
         router,
         ...options
     }: RenderOptions = {},
@@ -79,7 +76,7 @@ export function render(
         children,
     }: PropsWithChildren<unknown>): ReactElement => {
         useEffect(() => {
-            mockMatchMedia({ breakpoint })
+            mockMatchMedia({ mediaQuery })
         }, [])
 
         return (
@@ -103,18 +100,18 @@ export type RenderHookOptions<P> = Omit<
     RenderHookOptionsDefault<P>,
     'wrapper'
 > & {
-    breakpoint?: BreakpointKey
+    mediaQuery?: string
 }
 
 export function renderHook<P, R>(
     callback: (props: P) => R,
-    { breakpoint = SSR_BREAKPOINT, ...options }: RenderHookOptions<P> = {},
+    { mediaQuery = '(min-width: 1px)', ...options }: RenderHookOptions<P> = {},
 ): RenderHookResult<P, R> {
     const WrapperWithContext = ({
         children,
     }: PropsWithChildren<unknown>): ReactElement => {
         useEffect(() => {
-            mockMatchMedia({ breakpoint })
+            mockMatchMedia({ mediaQuery })
         }, [])
 
         return <>{children}</>
