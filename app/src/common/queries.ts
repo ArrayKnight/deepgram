@@ -4,6 +4,9 @@ gql`
     mutation SignUpIn($user: UserUpsertInput!) {
         user: upsertUser(user: $user) {
             id
+            name
+            email
+            image
         }
     }
 `

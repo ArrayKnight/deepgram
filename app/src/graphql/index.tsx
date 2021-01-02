@@ -149,7 +149,7 @@ export type SignUpInMutation = (
   { __typename: 'Mutation' }
   & { user: (
     { __typename: 'User' }
-    & Pick<User, 'id'>
+    & Pick<User, 'id' | 'name' | 'email' | 'image'>
   ) }
 );
 
@@ -158,6 +158,9 @@ export const SignUpInDocument = gql`
     mutation SignUpIn($user: UserUpsertInput!) {
   user: upsertUser(user: $user) {
     id
+    name
+    email
+    image
   }
 }
     `;

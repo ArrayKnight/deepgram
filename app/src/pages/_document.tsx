@@ -4,31 +4,31 @@ import React from 'react'
 
 export default class extends Document {
     public static async getInitialProps(
-        context: DocumentContext,
+        ctx: DocumentContext,
     ): Promise<DocumentInitialProps> {
-        const sheet = new ServerStyleSheet()
-        const { renderPage } = context
+        const styleSheet = new ServerStyleSheet()
 
         try {
-            context.renderPage = () =>
-                renderPage({
-                    enhanceApp: (App) => (props) =>
-                        sheet.collectStyles(<App {...props} />),
-                })
-
-            const initialProps = await Document.getInitialProps(context)
+            const initialProps = await Document.getInitialProps({
+                ...ctx,
+                renderPage: () =>
+                    ctx.renderPage({
+                        enhanceApp: (App) => (props) =>
+                            styleSheet.collectStyles(<App {...props} />),
+                    }),
+            })
 
             return {
                 ...initialProps,
                 styles: (
                     <>
                         {initialProps.styles}
-                        {sheet.getStyleElement()}
+                        {styleSheet.getStyleElement()}
                     </>
                 ),
             }
         } finally {
-            sheet.seal()
+            styleSheet.seal()
         }
     }
 }
