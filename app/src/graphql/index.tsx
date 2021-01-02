@@ -140,12 +140,12 @@ export type UserUpsertInput = {
   image?: Maybe<Scalars['String']>;
 };
 
-export type SignUpInMutationVariables = Exact<{
+export type UpsertUserMutationVariables = Exact<{
   user: UserUpsertInput;
 }>;
 
 
-export type SignUpInMutation = (
+export type UpsertUserMutation = (
   { __typename: 'Mutation' }
   & { user: (
     { __typename: 'User' }
@@ -154,8 +154,8 @@ export type SignUpInMutation = (
 );
 
 
-export const SignUpInDocument = gql`
-    mutation SignUpIn($user: UserUpsertInput!) {
+export const UpsertUserDocument = gql`
+    mutation UpsertUser($user: UserUpsertInput!) {
   user: upsertUser(user: $user) {
     id
     name
@@ -164,31 +164,31 @@ export const SignUpInDocument = gql`
   }
 }
     `;
-export type SignUpInMutationFn = Apollo.MutationFunction<SignUpInMutation, SignUpInMutationVariables>;
+export type UpsertUserMutationFn = Apollo.MutationFunction<UpsertUserMutation, UpsertUserMutationVariables>;
 
 /**
- * __useSignUpInMutation__
+ * __useUpsertUserMutation__
  *
- * To run a mutation, you first call `useSignUpInMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSignUpInMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpsertUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertUserMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [signUpInMutation, { data, loading, error }] = useSignUpInMutation({
+ * const [upsertUserMutation, { data, loading, error }] = useUpsertUserMutation({
  *   variables: {
  *      user: // value for 'user'
  *   },
  * });
  */
-export function useSignUpInMutation(baseOptions?: Apollo.MutationHookOptions<SignUpInMutation, SignUpInMutationVariables>) {
-        return Apollo.useMutation<SignUpInMutation, SignUpInMutationVariables>(SignUpInDocument, baseOptions);
+export function useUpsertUserMutation(baseOptions?: Apollo.MutationHookOptions<UpsertUserMutation, UpsertUserMutationVariables>) {
+        return Apollo.useMutation<UpsertUserMutation, UpsertUserMutationVariables>(UpsertUserDocument, baseOptions);
       }
-export type SignUpInMutationHookResult = ReturnType<typeof useSignUpInMutation>;
-export type SignUpInMutationResult = Apollo.MutationResult<SignUpInMutation>;
-export type SignUpInMutationOptions = Apollo.BaseMutationOptions<SignUpInMutation, SignUpInMutationVariables>;
+export type UpsertUserMutationHookResult = ReturnType<typeof useUpsertUserMutation>;
+export type UpsertUserMutationResult = Apollo.MutationResult<UpsertUserMutation>;
+export type UpsertUserMutationOptions = Apollo.BaseMutationOptions<UpsertUserMutation, UpsertUserMutationVariables>;
 
       export interface PossibleTypesResultData {
         possibleTypes: {

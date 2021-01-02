@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { useSignUpInMutation } from '~/graphql'
+import { useUpsertUserMutation } from '~/graphql'
 import { userState } from '~/state'
 import { SignUpIn } from '../SignUpIn'
 import { UserRequiredProps } from './types'
@@ -9,7 +9,7 @@ import { UserRequiredProps } from './types'
 export const UserRequired = memo(
     ({ children }: UserRequiredProps): ReactElement => {
         const [loggedInUser, setUserState] = useRecoilState(userState)
-        const [signUpIn, { data }] = useSignUpInMutation()
+        const [upsertUser, { data }] = useUpsertUserMutation()
 
         useEffect(() => {
             setUserState(data?.user ?? null)
@@ -20,7 +20,7 @@ export const UserRequired = memo(
                 {children}
                 <SignUpIn
                     user={loggedInUser}
-                    onSubmit={(user) => signUpIn({ variables: { user } })}
+                    onSubmit={(user) => upsertUser({ variables: { user } })}
                 />
             </>
         )
