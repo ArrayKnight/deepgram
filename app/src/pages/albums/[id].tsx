@@ -3,13 +3,13 @@ import React, { ReactElement } from 'react'
 
 import { UserRequired } from '~/components'
 
-export default function HomePage(): ReactElement {
+export default function AlbumPage(): ReactElement {
     return (
         <UserRequired>
             <Head>
-                <title>Dashboard | Deepgram</title>
+                <title>Album | Deepgram</title>
             </Head>
-            Hello World!
+            Album Detail
         </UserRequired>
     )
 }
