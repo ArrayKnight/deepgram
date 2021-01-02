@@ -3,6 +3,7 @@ import Express from 'express'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 import { Container } from 'typedi'
+import { v4 as uuid } from 'uuid'
 
 import './databases'
 import { AlbumResolver, TrackResolver, UserResolver } from './resolvers'
@@ -15,9 +16,7 @@ void (async () => {
     const server = new ApolloServer({
         schema,
         context: (ctx) => {
-            const requestId = Math.floor(
-                Math.random() * Number.MAX_SAFE_INTEGER,
-            )
+            const requestId = uuid()
             const container = Container.of(requestId)
             const context = {
                 requestId,

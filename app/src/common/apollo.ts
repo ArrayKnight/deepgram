@@ -1,9 +1,6 @@
-import {
-    ApolloClient as Client,
-    createHttpLink,
-    InMemoryCache,
-} from '@apollo/client'
+import { ApolloClient as Client, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { createUploadLink } from 'apollo-upload-client'
 import merge from 'deepmerge'
 import fetch from 'isomorphic-unfetch'
 import { useMemo } from 'react'
@@ -16,9 +13,12 @@ import { isUndefined } from '~/common/utilities'
 let client: ApolloClient
 let authId: Maybe<string>
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
     uri: SSR ? GRAPHQL_ENDPOINT : `${window.location.origin}/api/graphql`,
     fetch,
+    headers: {
+        'keep-alive': 'true',
+    },
 })
 const authLink = setContext((_, { headers }) => ({
     headers: {

@@ -11,104 +11,112 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: File;
 };
 
 export type Query = {
   __typename: 'Query';
   albums: Array<Album>;
-  album: Maybe<Album>;
+  album?: Maybe<Album>;
   tracks: Array<Track>;
-  track: Maybe<Track>;
+  track?: Maybe<Track>;
   users: Array<User>;
-  user: Maybe<User>;
+  user?: Maybe<User>;
 };
 
 
 export type QueryAlbumsArgs = {
-  id: Maybe<Array<Scalars['String']>>;
-  createdBy: Maybe<Array<Scalars['String']>>;
-  name: Maybe<Array<Scalars['String']>>;
+  id?: Maybe<Array<Scalars['String']>>;
+  createdBy?: Maybe<Array<Scalars['String']>>;
+  name?: Maybe<Array<Scalars['String']>>;
 };
 
 
 export type QueryAlbumArgs = {
-  id: Maybe<Scalars['String']>;
-  createdBy: Maybe<Scalars['String']>;
-  name: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  createdBy?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 
 export type QueryTracksArgs = {
-  maxDuration: Maybe<Scalars['Float']>;
-  id: Maybe<Array<Scalars['String']>>;
-  uploadedBy: Maybe<Array<Scalars['String']>>;
-  albumId: Maybe<Array<Scalars['String']>>;
-  fileName: Maybe<Array<Scalars['String']>>;
+  maxDuration?: Maybe<Scalars['Float']>;
+  id?: Maybe<Array<Scalars['String']>>;
+  uploadedBy?: Maybe<Array<Scalars['String']>>;
+  albumId?: Maybe<Array<Scalars['String']>>;
+  fileName?: Maybe<Array<Scalars['String']>>;
 };
 
 
 export type QueryTrackArgs = {
-  id: Maybe<Scalars['String']>;
-  uploadedBy: Maybe<Scalars['String']>;
-  albumId: Maybe<Scalars['String']>;
-  fileName: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  uploadedBy?: Maybe<Scalars['String']>;
+  albumId?: Maybe<Scalars['String']>;
+  fileName?: Maybe<Scalars['String']>;
 };
 
 
 export type QueryUsersArgs = {
-  id: Maybe<Array<Scalars['String']>>;
-  name: Maybe<Array<Scalars['String']>>;
-  email: Maybe<Array<Scalars['String']>>;
+  id?: Maybe<Array<Scalars['String']>>;
+  name?: Maybe<Array<Scalars['String']>>;
+  email?: Maybe<Array<Scalars['String']>>;
 };
 
 
 export type QueryUserArgs = {
-  id: Maybe<Scalars['String']>;
-  name: Maybe<Scalars['String']>;
-  email: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
 };
 
 export type Album = {
   __typename: 'Album';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
   name: Scalars['String'];
   id: Scalars['ID'];
-  createdBy: Maybe<User>;
+  createdAt?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  createdBy?: Maybe<User>;
   modifiedBy: Array<User>;
   tracks: Array<Track>;
 };
 
 export type User = {
   __typename: 'User';
-  name: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  image: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
 };
 
 export type Track = {
   __typename: 'Track';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  albumId: Scalars['String'];
   fileName: Scalars['String'];
-  fileType: Scalars['String'];
+  mimeType: Scalars['String'];
   fileSize: Scalars['Int'];
   duration: Scalars['Float'];
   id: Scalars['ID'];
-  uploadedBy: Maybe<User>;
+  createdAt?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  uploadedBy?: Maybe<User>;
+  album?: Maybe<Album>;
 };
 
 export type Mutation = {
   __typename: 'Mutation';
   insertAlbum: Album;
+  insertTrack: Track;
   upsertUser: User;
 };
 
 
 export type MutationInsertAlbumArgs = {
   album: AlbumInsertInput;
+};
+
+
+export type MutationInsertTrackArgs = {
+  track: TrackInsertInput;
 };
 
 
@@ -120,10 +128,16 @@ export type AlbumInsertInput = {
   name: Scalars['String'];
 };
 
+export type TrackInsertInput = {
+  albumId: Scalars['String'];
+  file: Scalars['Upload'];
+};
+
+
 export type UserUpsertInput = {
-  name: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  image: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
 };
 
 export type SignUpInMutationVariables = Exact<{

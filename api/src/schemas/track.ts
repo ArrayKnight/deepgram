@@ -1,4 +1,5 @@
-import { ArgsType, Field, Int, ObjectType } from 'type-graphql'
+import { FileUpload, GraphQLUpload } from 'graphql-upload'
+import { ArgsType, Field, InputType, Int, ObjectType } from 'type-graphql'
 
 import { Document } from '../types'
 
@@ -8,15 +9,14 @@ export class Track implements Document {
     createdAt?: Date
     updatedAt?: Date
     uploadedBy: string
-
-    @Field()
     albumId: string
+    assetName: string
 
     @Field()
     fileName: string
 
     @Field()
-    fileType: string
+    mimeType: string
 
     @Field(() => Int)
     fileSize: number
@@ -59,4 +59,13 @@ export class TrackFieldsArgs {
 
     @Field({ nullable: true })
     fileName?: string
+}
+
+@InputType()
+export class TrackInsertInput {
+    @Field()
+    albumId: string
+
+    @Field(() => GraphQLUpload)
+    file: Promise<FileUpload>
 }

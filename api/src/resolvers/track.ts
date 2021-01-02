@@ -1,17 +1,31 @@
-import { Args, FieldResolver, ID, Query, Resolver, Root } from 'type-graphql'
+import {
+    Arg,
+    Args,
+    Ctx,
+    FieldResolver,
+    ID,
+    Mutation,
+    Query,
+    Resolver,
+    Root,
+} from 'type-graphql'
 
 import {
+    Album,
     Track,
     TrackFieldsArgs,
+    TrackInsertInput,
     TracksFieldsArgs,
     TracksFiltersArgs,
     User,
 } from '../schemas'
-import { TrackService, UserService } from '../services'
+import { AlbumService, TrackService, UserService } from '../services'
+import { Context } from '../types'
 
 @Resolver(() => Track)
 export class TrackResolver {
     constructor(
+        private albumService: AlbumService,
         private trackService: TrackService,
         private userService: UserService,
     ) {}
@@ -37,7 +51,23 @@ export class TrackResolver {
         return await this.userService.getOne({ id: track.uploadedBy })
     }
 
+    @FieldResolver(() => Album, { nullable: true })
+    async album(@Root() track: Track): Promise<Album | null> {
+        return await this.albumService.getOne({ id: track.albumId })
+    }
+
     // Mutations
+    @Mutation(() => Track)
+    async insertTrack(
+        @Arg('track') track: TrackInsertInput,
+        @Ctx() ctx: Context,
+    ): Promise<Track> {
+        if (!ctx.userId) {
+            throw new Error('An authenticated user is required')
+        }
+
+        return await this.trackService.insert(track, ctx.userId)
+    }
 
     // Queries
     @Query(() => [Track])

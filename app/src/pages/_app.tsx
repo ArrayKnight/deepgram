@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import type { AppProps } from 'next/app'
-import React, { FunctionComponent, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { RecoilRoot, useRecoilValue } from 'recoil'
 import { ThemeProvider } from 'styled-components'
 
@@ -8,16 +8,6 @@ import { GlobalStyles, theme, useApollo } from '~/common'
 import { SignIn } from '~/components'
 import { userIdState } from '~/state'
 import type { PageProps } from '~/types'
-
-function withRecoil(Component: FunctionComponent) {
-    return function RecoilWrappedComponent(props) {
-        return (
-            <RecoilRoot>
-                <Component {...props} />
-            </RecoilRoot>
-        )
-    }
-}
 
 function App({ Component, pageProps }: AppProps): ReactElement {
     const { initialApolloState, ...rest } = pageProps as PageProps
@@ -35,4 +25,10 @@ function App({ Component, pageProps }: AppProps): ReactElement {
     )
 }
 
-export default withRecoil(App)
+export default function Wrapped(props: AppProps): ReactElement {
+    return (
+        <RecoilRoot>
+            <App {...props} />
+        </RecoilRoot>
+    )
+}

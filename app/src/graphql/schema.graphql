@@ -8,10 +8,10 @@ type Query {
 }
 
 type Album {
-  createdAt: String!
-  updatedAt: String!
   name: String!
   id: ID!
+  createdAt: String
+  updatedAt: String
   createdBy: User
   modifiedBy: [User!]!
   tracks: [Track!]!
@@ -25,25 +25,34 @@ type User {
 }
 
 type Track {
-  createdAt: String!
-  updatedAt: String!
-  albumId: String!
   fileName: String!
-  fileType: String!
+  mimeType: String!
   fileSize: Int!
   duration: Float!
   id: ID!
+  createdAt: String
+  updatedAt: String
   uploadedBy: User
+  album: Album
 }
 
 type Mutation {
   insertAlbum(album: AlbumInsertInput!): Album!
+  insertTrack(track: TrackInsertInput!): Track!
   upsertUser(user: UserUpsertInput!): User!
 }
 
 input AlbumInsertInput {
   name: String!
 }
+
+input TrackInsertInput {
+  albumId: String!
+  file: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input UserUpsertInput {
   name: String
