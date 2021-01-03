@@ -8,16 +8,16 @@ const options: DataStoreOptions = {
 }
 
 export const users = Datastore.create({
-    filename: 'src/databases/users.json',
+    filename: 'src/databases/users.db',
     ...options,
 })
 
 export const albums = Datastore.create({
-    filename: 'src/databases/albums.json',
+    filename: 'src/databases/albums.db',
     ...options,
 })
 
 export const tracks = Datastore.create({
-    filename: 'src/databases/tracks.json',
+    filename: 'src/databases/tracks.db',
     ...options,
 })

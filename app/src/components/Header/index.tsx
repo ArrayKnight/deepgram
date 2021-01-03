@@ -33,10 +33,15 @@ export const Header = memo(
             setUserMenuAnchor(null)
         }
 
+        function signOut(): void {
+            closeUserMenu()
+            onSignOut()
+        }
+
         return (
             <AppBar color="default" elevation={0} position="static">
                 <Container maxWidth="xl">
-                    <Toolbar>
+                    <Toolbar disableGutters={true}>
                         <Button href="/">
                             <ContactSupport fontSize="large" />
                             <Typography noWrap={true} variant="h5">
@@ -62,7 +67,7 @@ export const Header = memo(
                                     open={!!userMenuAnchor}
                                     onClose={closeUserMenu}
                                 >
-                                    <MenuItem onClick={onSignOut}>
+                                    <MenuItem onClick={signOut}>
                                         Logout
                                     </MenuItem>
                                 </Menu>

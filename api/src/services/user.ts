@@ -31,13 +31,9 @@ export class UserService {
         return await users.insert<UserUpsertInput>(user)
     }
 
-    async update({ _id, name, image }: User): Promise<User> {
-        return await users.update<User>(
-            { _id },
-            { name, image },
-            {
-                returnUpdatedDocs: true,
-            },
-        )
+    async update(id: User['_id'], user: User): Promise<User> {
+        return await users.update<User>({ _id: id }, user, {
+            returnUpdatedDocs: true,
+        })
     }
 }

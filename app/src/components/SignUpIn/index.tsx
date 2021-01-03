@@ -60,11 +60,11 @@ export const SignUpIn = memo(
             key: keyof typeof state,
         ): (event: ChangeEvent<HTMLInputElement>) => void {
             return (event: ChangeEvent<HTMLInputElement>): void => {
-                const value = event.target.value.trim()
+                const value = event.target.value
                 let error = ''
 
                 try {
-                    schemas[key].validateSync(value)
+                    schemas[key].validateSync(value.trim())
                 } catch (err) {
                     error = (err as Error).message
                 }
@@ -83,8 +83,8 @@ export const SignUpIn = memo(
             onSubmit(
                 Object.entries(state).reduce(
                     (acc: UserUpsertInput, [key, { value }]) => {
-                        if (value) {
-                            acc[key as keyof UserUpsertInput] = value
+                        if (value.trim()) {
+                            acc[key as keyof UserUpsertInput] = value.trim()
                         }
 
                         return acc

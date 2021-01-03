@@ -35,11 +35,11 @@ export class UserResolver {
         const user = await this.userService.getOne({ email })
 
         if (user) {
-            if (user.name !== name || user.image !== image) {
-                return await this.userService.update(user)
-            }
-
-            return user
+            return await this.userService.update(user._id, {
+                ...user,
+                name: name ? name : user.name,
+                image: image ? image : user.image,
+            })
         }
 
         return await this.userService.insert({
