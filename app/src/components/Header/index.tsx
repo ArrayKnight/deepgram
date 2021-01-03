@@ -1,21 +1,19 @@
 import {
     AppBar,
     Avatar,
-    Button,
     Container,
     Menu,
     MenuItem,
-    Toolbar,
     Typography,
 } from '@material-ui/core'
 import { ContactSupport } from '@material-ui/icons'
 import React, { memo, MouseEvent, ReactElement, useState } from 'react'
 
-import { AvatarButton, Space } from './styled'
+import { LogoButton, AvatarButton, NavBar } from './styled'
 import { HeaderProps } from './types'
 import { capitalCase } from 'change-case'
 
-export * from './styled'
+export * as HeaderStyled from './styled'
 export * from './types'
 
 export const Header = memo(
@@ -41,14 +39,13 @@ export const Header = memo(
         return (
             <AppBar color="default" elevation={0} position="static">
                 <Container maxWidth="xl">
-                    <Toolbar disableGutters={true}>
-                        <Button href="/">
+                    <NavBar disableGutters={true}>
+                        <LogoButton href="/">
                             <ContactSupport fontSize="large" />
                             <Typography noWrap={true} variant="h5">
                                 Deepgram
                             </Typography>
-                        </Button>
-                        <Space />
+                        </LogoButton>
                         {user && (
                             <>
                                 <AvatarButton onClick={openUserMenu}>
@@ -73,7 +70,7 @@ export const Header = memo(
                                 </Menu>
                             </>
                         )}
-                    </Toolbar>
+                    </NavBar>
                 </Container>
             </AppBar>
         )

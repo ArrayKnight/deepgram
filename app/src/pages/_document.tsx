@@ -23,6 +23,10 @@ export default class extends Document {
                 styles: (
                     <>
                         {initialProps.styles}
+                        <link
+                            rel="stylesheet"
+                            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                        />
                         {styleSheet.getStyleElement()}
                     </>
                 ),

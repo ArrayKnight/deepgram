@@ -1,3 +1,5 @@
+export * from './Albums'
 export * from './Header'
+export * from './PageHeader'
 export * from './SignUpIn'
 export * from './UserRequired'

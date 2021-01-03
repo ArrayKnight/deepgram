@@ -13,4 +13,12 @@ export const GlobalStyles = createGlobalStyle`
     .MuiButton-root {
         text-transform: none;
     }
+    
+    .MuiFab-root {
+        box-shadow: none;
+    }
+    
+    .MuiTableCell-head {
+        font-weight: bold;
+    }
 `

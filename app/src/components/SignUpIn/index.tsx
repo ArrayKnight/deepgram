@@ -12,7 +12,7 @@ import { UserUpsertInput } from '~/graphql'
 import { ModalBox, ModalContent } from './styled'
 import { SignUpInProps } from './types'
 
-export * from './styled'
+export * as SignUpInStyled from './styled'
 export * from './types'
 
 const schemas = {
@@ -103,7 +103,7 @@ export const SignUpIn = memo(
                 aria-labelledby="Sign up/in"
                 aria-describedby="User form to sign up or in"
             >
-                <ModalBox elevation={2}>
+                <ModalBox elevation={4}>
                     <AppBar color="default" elevation={0} position="static">
                         <Tabs
                             centered={true}

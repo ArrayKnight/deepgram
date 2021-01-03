@@ -1,10 +1,16 @@
-import { IconButton } from '@material-ui/core'
-import styled from 'styled-components'
+import { Button, IconButton, Theme, Toolbar } from '@material-ui/core'
+import styled, { css, ThemeProps } from 'styled-components'
+
+export const LogoButton = styled(Button)(
+    ({ theme }: ThemeProps<Theme>) => css`
+        margin-left: -${theme.spacing(1)}px;
+    `,
+)
 
 export const AvatarButton = styled(IconButton)`
     padding: 0;
 `
 
-export const Space = styled.div`
-    flex: 1 1 auto;
+export const NavBar = styled(Toolbar)`
+    justify-content: space-between;
 `
