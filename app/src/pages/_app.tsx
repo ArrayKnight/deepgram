@@ -2,17 +2,22 @@ import { ApolloProvider } from '@apollo/client'
 import { CssBaseline, StylesProvider, ThemeProvider } from '@material-ui/core'
 import type { AppProps } from 'next/app'
 import React, { ReactElement } from 'react'
-import { RecoilRoot, useRecoilValue } from 'recoil'
+import { RecoilRoot, useRecoilState } from 'recoil'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 
 import { GlobalStyles, theme, useApollo } from '~/common'
+import { Header } from '~/components'
 import { userState } from '~/state'
 import type { PageProps } from '~/types'
 
 function App({ Component, pageProps }: AppProps): ReactElement {
     const { initialApolloState, ...rest } = pageProps as PageProps
-    const user = useRecoilValue(userState)
+    const [user, setUser] = useRecoilState(userState)
     const client = useApollo(initialApolloState, user?.id)
+
+    function signOut(): void {
+        setUser(null)
+    }
 
     return (
         <ApolloProvider client={client}>
@@ -21,6 +26,7 @@ function App({ Component, pageProps }: AppProps): ReactElement {
                     <StyledThemeProvider theme={theme}>
                         <CssBaseline />
                         <GlobalStyles />
+                        <Header user={user} onSignOut={signOut} />
                         <Component {...rest} />
                     </StyledThemeProvider>
                 </ThemeProvider>

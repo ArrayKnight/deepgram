@@ -33,5 +33,9 @@ function createAlbums(): AlbumsProps['albums'] {
 }
 
 export const albums = (): ReactElement => (
-    <Albums albums={createAlbums()} onAlbumClick={action('onAlbumClick')} />
+    <Albums
+        albums={createAlbums()}
+        onAlbumClick={action('onAlbumClick')}
+        onCreateAlbum={action('onCreateAlbum')}
+    />
 )

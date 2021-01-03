@@ -1,21 +1,36 @@
 import { gql } from '@apollo/client'
-import { Fab } from '@material-ui/core'
-import { Add } from '@material-ui/icons'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import React, { ReactElement } from 'react'
 
 import { getApolloClient, SSR } from '~/common'
-import { Albums, Header, PageHeader, UserRequired } from '~/components'
-import { AlbumsQuery, useAlbumsQuery } from '~/graphql'
+import { Albums, UserRequired } from '~/components'
+import {
+    AlbumInsertInput,
+    AlbumsDocument,
+    AlbumsQuery,
+    useAlbumsQuery,
+    useCreateAlbumMutation,
+} from '~/graphql'
 import { PageProps } from '~/types'
-import { useRouter } from 'next/router'
-import { useRecoilState } from 'recoil'
-import { userState } from '~/state'
 
-const AlbumsGql = gql`
+gql`
     query Albums {
         albums {
+            id
+            name
+            createdAt
+            createdBy {
+                id
+                name
+                email
+            }
+        }
+    }
+
+    mutation createAlbum($album: AlbumInsertInput!) {
+        insertAlbum(album: $album) {
             id
             name
             createdAt
@@ -32,7 +47,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
     const client = getApolloClient(undefined)
 
     await client.query<AlbumsQuery>({
-        query: AlbumsGql,
+        query: AlbumsDocument,
     })
 
     return {
@@ -43,18 +58,20 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
 }
 
 export default function AlbumsPage(): ReactElement {
-    const { data } = useAlbumsQuery({
+    const { data, refetch } = useAlbumsQuery({
         fetchPolicy: SSR ? 'cache-only' : 'cache-and-network',
     })
-    const [user, setUser] = useRecoilState(userState)
+    const [createAlbum] = useCreateAlbumMutation({
+        onCompleted: () => refetch(),
+    })
     const router = useRouter()
 
-    function signOut(): void {
-        setUser(null)
+    function onAlbumClick({ id }: AlbumsQuery['albums'][number]): void {
+        void router.push(`/albums/${id}`)
     }
 
-    function goToAlbum({ id }: AlbumsQuery['albums'][number]): void {
-        void router.push(`/albums/${id}`)
+    function onCreateAlbum(album: AlbumInsertInput): void {
+        void createAlbum({ variables: { album } })
     }
 
     return (
@@ -62,13 +79,11 @@ export default function AlbumsPage(): ReactElement {
             <Head>
                 <title>Albums | Deepgram</title>
             </Head>
-            <Header user={user} onSignOut={signOut} />
-            <PageHeader title="Albums">
-                <Fab color="secondary" size="small">
-                    <Add />
-                </Fab>
-            </PageHeader>
-            <Albums albums={data?.albums || []} onAlbumClick={goToAlbum} />
+            <Albums
+                albums={data?.albums || []}
+                onAlbumClick={onAlbumClick}
+                onCreateAlbum={onCreateAlbum}
+            />
         </UserRequired>
     )
 }
