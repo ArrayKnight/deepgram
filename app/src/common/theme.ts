@@ -9,4 +9,8 @@ export const theme = responsiveFontSizes(
     }),
 )
 
-export const GlobalStyles = createGlobalStyle``
+export const GlobalStyles = createGlobalStyle`
+    .MuiButton-root {
+        text-transform: none;
+    }
+`
