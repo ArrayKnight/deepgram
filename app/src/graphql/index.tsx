@@ -170,6 +170,18 @@ export type AlbumQuery = (
   )> }
 );
 
+export type AlbumFragment = (
+  { __typename: 'Album' }
+  & Pick<Album, 'id' | 'name' | 'createdAt'>
+  & { createdBy?: Maybe<(
+    { __typename: 'User' }
+    & Pick<User, 'id' | 'name' | 'email'>
+  )>, tracks: Array<(
+    { __typename: 'Track' }
+    & Pick<Track, 'id'>
+  )> }
+);
+
 export type AlbumsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -177,11 +189,7 @@ export type AlbumsQuery = (
   { __typename: 'Query' }
   & { albums: Array<(
     { __typename: 'Album' }
-    & Pick<Album, 'id' | 'name' | 'createdAt'>
-    & { createdBy?: Maybe<(
-      { __typename: 'User' }
-      & Pick<User, 'id' | 'name' | 'email'>
-    )> }
+    & AlbumFragment
   )> }
 );
 
@@ -194,11 +202,7 @@ export type CreateAlbumMutation = (
   { __typename: 'Mutation' }
   & { insertAlbum: (
     { __typename: 'Album' }
-    & Pick<Album, 'id' | 'name' | 'createdAt'>
-    & { createdBy?: Maybe<(
-      { __typename: 'User' }
-      & Pick<User, 'id' | 'name' | 'email'>
-    )> }
+    & AlbumFragment
   ) }
 );
 
@@ -222,25 +226,78 @@ export type TrackQuery = (
   )> }
 );
 
+export type TrackFragment = (
+  { __typename: 'Track' }
+  & Pick<Track, 'id' | 'createdAt' | 'fileName' | 'fileSize' | 'duration'>
+  & { album?: Maybe<(
+    { __typename: 'Album' }
+    & Pick<Album, 'id' | 'name'>
+  )>, uploadedBy?: Maybe<(
+    { __typename: 'User' }
+    & Pick<User, 'id' | 'name' | 'email'>
+  )> }
+);
+
 export type TracksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TracksQuery = (
   { __typename: 'Query' }
-  & { tracks: Array<(
+  & { albums: Array<(
+    { __typename: 'Album' }
+    & Pick<Album, 'id' | 'name'>
+  )>, tracks: Array<(
     { __typename: 'Track' }
-    & Pick<Track, 'id' | 'createdAt' | 'fileName' | 'fileSize' | 'duration'>
-    & { album?: Maybe<(
-      { __typename: 'Album' }
-      & Pick<Album, 'id' | 'name'>
-    )>, uploadedBy?: Maybe<(
-      { __typename: 'User' }
-      & Pick<User, 'id' | 'name' | 'email'>
-    )> }
+    & TrackFragment
   )> }
 );
 
+export type CreateTrackMutationVariables = Exact<{
+  track: TrackInsertInput;
+}>;
 
+
+export type CreateTrackMutation = (
+  { __typename: 'Mutation' }
+  & { insertTrack: (
+    { __typename: 'Track' }
+    & TrackFragment
+  ) }
+);
+
+export const AlbumFragmentDoc = gql`
+    fragment Album on Album {
+  id
+  name
+  createdAt
+  createdBy {
+    id
+    name
+    email
+  }
+  tracks {
+    id
+  }
+}
+    `;
+export const TrackFragmentDoc = gql`
+    fragment Track on Track {
+  id
+  createdAt
+  fileName
+  fileSize
+  duration
+  album {
+    id
+    name
+  }
+  uploadedBy {
+    id
+    name
+    email
+  }
+}
+    `;
 export const UpsertUserDocument = gql`
     mutation UpsertUser($user: UserUpsertInput!) {
   user: upsertUser(user: $user) {
@@ -319,17 +376,10 @@ export type AlbumQueryResult = Apollo.QueryResult<AlbumQuery, AlbumQueryVariable
 export const AlbumsDocument = gql`
     query Albums {
   albums {
-    id
-    name
-    createdAt
-    createdBy {
-      id
-      name
-      email
-    }
+    ...Album
   }
 }
-    `;
+    ${AlbumFragmentDoc}`;
 
 /**
  * __useAlbumsQuery__
@@ -358,17 +408,10 @@ export type AlbumsQueryResult = Apollo.QueryResult<AlbumsQuery, AlbumsQueryVaria
 export const CreateAlbumDocument = gql`
     mutation createAlbum($album: AlbumInsertInput!) {
   insertAlbum(album: $album) {
-    id
-    name
-    createdAt
-    createdBy {
-      id
-      name
-      email
-    }
+    ...Album
   }
 }
-    `;
+    ${AlbumFragmentDoc}`;
 export type CreateAlbumMutationFn = Apollo.MutationFunction<CreateAlbumMutation, CreateAlbumMutationVariables>;
 
 /**
@@ -442,24 +485,15 @@ export type TrackLazyQueryHookResult = ReturnType<typeof useTrackLazyQuery>;
 export type TrackQueryResult = Apollo.QueryResult<TrackQuery, TrackQueryVariables>;
 export const TracksDocument = gql`
     query Tracks {
-  tracks {
+  albums {
     id
-    createdAt
-    fileName
-    fileSize
-    duration
-    album {
-      id
-      name
-    }
-    uploadedBy {
-      id
-      name
-      email
-    }
+    name
+  }
+  tracks {
+    ...Track
   }
 }
-    `;
+    ${TrackFragmentDoc}`;
 
 /**
  * __useTracksQuery__
@@ -485,6 +519,38 @@ export function useTracksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Tra
 export type TracksQueryHookResult = ReturnType<typeof useTracksQuery>;
 export type TracksLazyQueryHookResult = ReturnType<typeof useTracksLazyQuery>;
 export type TracksQueryResult = Apollo.QueryResult<TracksQuery, TracksQueryVariables>;
+export const CreateTrackDocument = gql`
+    mutation CreateTrack($track: TrackInsertInput!) {
+  insertTrack(track: $track) {
+    ...Track
+  }
+}
+    ${TrackFragmentDoc}`;
+export type CreateTrackMutationFn = Apollo.MutationFunction<CreateTrackMutation, CreateTrackMutationVariables>;
+
+/**
+ * __useCreateTrackMutation__
+ *
+ * To run a mutation, you first call `useCreateTrackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTrackMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTrackMutation, { data, loading, error }] = useCreateTrackMutation({
+ *   variables: {
+ *      track: // value for 'track'
+ *   },
+ * });
+ */
+export function useCreateTrackMutation(baseOptions?: Apollo.MutationHookOptions<CreateTrackMutation, CreateTrackMutationVariables>) {
+        return Apollo.useMutation<CreateTrackMutation, CreateTrackMutationVariables>(CreateTrackDocument, baseOptions);
+      }
+export type CreateTrackMutationHookResult = ReturnType<typeof useCreateTrackMutation>;
+export type CreateTrackMutationResult = Apollo.MutationResult<CreateTrackMutation>;
+export type CreateTrackMutationOptions = Apollo.BaseMutationOptions<CreateTrackMutation, CreateTrackMutationVariables>;
 
       export interface PossibleTypesResultData {
         possibleTypes: {

@@ -16,29 +16,29 @@ import {
 import { PageProps } from '~/types'
 
 gql`
-    query Albums {
-        albums {
+    fragment Album on Album {
+        id
+        name
+        createdAt
+        createdBy {
             id
             name
-            createdAt
-            createdBy {
-                id
-                name
-                email
-            }
+            email
+        }
+        tracks {
+            id
+        }
+    }
+
+    query Albums {
+        albums {
+            ...Album
         }
     }
 
     mutation createAlbum($album: AlbumInsertInput!) {
         insertAlbum(album: $album) {
-            id
-            name
-            createdAt
-            createdBy {
-                id
-                name
-                email
-            }
+            ...Album
         }
     }
 `

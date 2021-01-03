@@ -1,4 +1,8 @@
-import { ApolloClient as Client, InMemoryCache } from '@apollo/client'
+import {
+    ApolloClient as Client,
+    ApolloLink,
+    InMemoryCache,
+} from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
 import merge from 'deepmerge'
@@ -8,12 +12,12 @@ import { useMemo } from 'react'
 import introspectionResults, { Maybe } from '~/graphql'
 import type { ApolloCache, ApolloClient } from '~/types'
 import { GRAPHQL_ENDPOINT, SSR } from './constants'
-import { isUndefined } from '~/common/utilities'
+import { isUndefined } from './utilities'
 
 let client: ApolloClient
 let authId: Maybe<string>
 
-const httpLink = createUploadLink({
+const uploadLink = createUploadLink({
     uri: SSR ? GRAPHQL_ENDPOINT : `${window.location.origin}/api/graphql`,
     fetch,
     headers: {
@@ -23,7 +27,7 @@ const httpLink = createUploadLink({
 const authLink = setContext((_, { headers }) => ({
     headers: {
         ...((headers || {}) as Record<string, string>),
-        authorization: `Bearer ${authId}`,
+        authorization: `${authId}`,
     },
 }))
 
@@ -31,7 +35,7 @@ function createApolloClient(): ApolloClient {
     return new Client({
         ssrMode: SSR,
         ssrForceFetchDelay: 100,
-        link: authLink.concat(httpLink),
+        link: ApolloLink.from([authLink, uploadLink]),
         cache: new InMemoryCache({
             possibleTypes: introspectionResults.possibleTypes,
         }),

@@ -26,7 +26,7 @@ export const ModalContent = styled.form(
         display: flex;
         flex-direction: column;
 
-        .MuiTextField-root {
+        .MuiFormControl-root {
             margin-bottom: ${theme.spacing(2)}px;
         }
     `,

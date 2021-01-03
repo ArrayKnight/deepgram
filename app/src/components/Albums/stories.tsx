@@ -13,7 +13,7 @@ export default {
 }
 
 function createAlbums(): AlbumsProps['albums'] {
-    return new Array(randomInt()).fill(null).map(() => ({
+    return new Array(randomInt({ min: 3, max: 20 })).fill(null).map(() => ({
         __typename: 'Album',
         id: uuid(),
         name: capitalCase(loremIpsum({ units: 'words', count: 2 })),
@@ -29,6 +29,9 @@ function createAlbums(): AlbumsProps['albums'] {
                 }),
             )}@deepgram.com`,
         },
+        tracks: new Array(randomInt())
+            .fill(null)
+            .map(() => ({ __typename: 'Track', id: uuid() })),
     }))
 }
 

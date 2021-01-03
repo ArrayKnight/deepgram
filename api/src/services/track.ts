@@ -50,6 +50,7 @@ export class TrackService {
         return new Promise((resolve, reject) => {
             const fileStream = file.createReadStream()
             const assetName = `${uuid()}-${filename}`
+            const assetPath = `src/assets/${assetName}`
             let fileSize = 0
 
             fileStream.on('data', (chunk) => (fileSize += chunk.length))
@@ -60,7 +61,13 @@ export class TrackService {
                 }
 
                 void (async () => {
-                    const duration = await getAudioDurationInSeconds(fileStream)
+                    let duration = 0
+
+                    try {
+                        duration = await getAudioDurationInSeconds(assetPath)
+                    } catch (error) {
+                        reject(error)
+                    }
 
                     if (duration === 0) {
                         reject(new Error('Uploaded file has no duration'))
@@ -80,7 +87,7 @@ export class TrackService {
                 })()
             })
 
-            fileStream.pipe(fs.createWriteStream(`.src/assets/${assetName}`))
+            fileStream.pipe(fs.createWriteStream(assetPath))
         })
     }
 }

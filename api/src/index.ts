@@ -1,5 +1,6 @@
 import { ApolloServer } from 'apollo-server-express'
 import Express from 'express'
+import { graphqlUploadExpress } from 'graphql-upload'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 import { Container } from 'typedi'
@@ -14,7 +15,6 @@ void (async () => {
         container: Container,
     })
     const server = new ApolloServer({
-        schema,
         context: (ctx) => {
             const requestId = uuid()
             const container = Container.of(requestId)
@@ -28,8 +28,17 @@ void (async () => {
 
             return context
         },
+        schema,
+        uploads: false, // Out of date version of graphql-upload fails
     })
     const app = Express()
+
+    app.use(
+        graphqlUploadExpress({
+            maxFileSize: 5e6, // 5MB
+            maxFiles: 1,
+        }),
+    )
 
     server.applyMiddleware({ app })
 

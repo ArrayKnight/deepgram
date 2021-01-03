@@ -5,6 +5,7 @@
 .vscode/
 
 # Local
+/api/src/assets/
 /api/src/databases/*.db
 /app/public/
 /app/src/assets/

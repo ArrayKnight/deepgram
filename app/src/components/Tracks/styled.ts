@@ -1,5 +1,16 @@
-import { Paper, Theme } from '@material-ui/core'
+import { Container, Paper, Theme } from '@material-ui/core'
+import { hideVisually } from 'polished'
 import styled, { css, ThemeProps } from 'styled-components'
+
+export const TableContainer = styled(Container)`
+    .MuiPaper-root {
+        box-shadow: none;
+    }
+
+    .MuiTableCell-footer {
+        border-bottom: 0;
+    }
+`
 
 export const ModalBox = styled(Paper)`
     min-width: 300px;
@@ -21,3 +32,7 @@ export const ModalContent = styled.form(
         }
     `,
 )
+
+export const FileInput = styled.input`
+    ${hideVisually()};
+`

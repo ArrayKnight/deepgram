@@ -94,8 +94,10 @@ export const Albums = memo(
                         columns={[
                             { title: 'Name', field: 'name' },
                             {
-                                title: 'Owner',
-                                field: 'createdBy.name',
+                                title: 'Created By',
+                                field: 'createdBy.email',
+                                render: ({ createdBy }) =>
+                                    createdBy?.name || createdBy?.email,
                             },
                             {
                                 title: 'Created',
@@ -109,8 +111,13 @@ export const Albums = memo(
                                           )
                                         : null,
                             },
+                            {
+                                title: '# of Tracks',
+                                field: 'tracks.length',
+                                type: 'numeric',
+                            },
                         ]}
-                        data={albums}
+                        data={albums.map((album) => ({ ...album }))}
                         options={{
                             draggable: false,
                             emptyRowsWhenPaging: false,
