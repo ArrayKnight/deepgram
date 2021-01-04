@@ -1,6 +1,7 @@
 import { ApolloServer } from 'apollo-server-express'
 import Express from 'express'
 import { graphqlUploadExpress } from 'graphql-upload'
+import path from 'path'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 import { Container } from 'typedi'
@@ -32,6 +33,8 @@ void (async () => {
         uploads: false, // Out of date version of graphql-upload fails
     })
     const app = Express()
+
+    app.use('/assets', Express.static(path.join(__dirname, 'assets')))
 
     app.use(
         graphqlUploadExpress({

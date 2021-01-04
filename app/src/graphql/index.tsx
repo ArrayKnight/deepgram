@@ -91,6 +91,7 @@ export type User = {
 
 export type Track = {
   __typename: 'Track';
+  assetName: Scalars['String'];
   fileName: Scalars['String'];
   mimeType: Scalars['String'];
   fileSize: Scalars['Int'];
@@ -228,7 +229,7 @@ export type TrackQuery = (
 
 export type TrackFragment = (
   { __typename: 'Track' }
-  & Pick<Track, 'id' | 'createdAt' | 'fileName' | 'fileSize' | 'duration'>
+  & Pick<Track, 'id' | 'createdAt' | 'assetName' | 'fileName' | 'fileSize' | 'duration'>
   & { album?: Maybe<(
     { __typename: 'Album' }
     & Pick<Album, 'id' | 'name'>
@@ -284,6 +285,7 @@ export const TrackFragmentDoc = gql`
     fragment Track on Track {
   id
   createdAt
+  assetName
   fileName
   fileSize
   duration

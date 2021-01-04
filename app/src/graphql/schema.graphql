@@ -25,6 +25,7 @@ type User {
 }
 
 type Track {
+  assetName: String!
   fileName: String!
   mimeType: String!
   fileSize: Int!

@@ -1,5 +1,6 @@
 module.exports = {
     env: {
+        ASSETS_ENDPOINT: process.env.ASSETS_ENDPOINT,
         GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
     },
     webpack(config) {

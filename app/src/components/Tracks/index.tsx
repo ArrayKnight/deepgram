@@ -2,12 +2,13 @@ import {
     Button,
     Fab,
     FormControl,
+    IconButton,
     InputLabel,
     MenuItem,
     Modal,
     Select,
 } from '@material-ui/core'
-import { Add, AttachFile } from '@material-ui/icons'
+import { Add, AttachFile, GetApp, Speaker } from '@material-ui/icons'
 import { format, parseISO } from 'date-fns'
 import MaterialTable from 'material-table'
 import React, {
@@ -20,6 +21,7 @@ import React, {
 } from 'react'
 import { v4 as uuid } from 'uuid'
 
+import { ASSETS_ENDPOINT } from '~/common'
 import { PageHeader } from '../PageHeader'
 import { TableContainer, ModalBox, ModalContent, FileInput } from './styled'
 import { TracksProps, TracksState } from './types'
@@ -137,6 +139,30 @@ export const Tracks = memo(
                                 title: 'Duration (seconds)',
                                 field: 'duration',
                                 type: 'numeric',
+                            },
+                            {
+                                title: 'Actions',
+                                disableClick: true,
+                                filtering: false,
+                                sorting: false,
+                                type: 'numeric', // For alignment
+                                render: ({ assetName, fileName }) => (
+                                    <>
+                                        <IconButton
+                                            href={`${ASSETS_ENDPOINT}/${assetName}`}
+                                            target="_blank"
+                                        >
+                                            <Speaker />
+                                        </IconButton>
+                                        <IconButton
+                                            href={`${ASSETS_ENDPOINT}/${assetName}`}
+                                            download={fileName}
+                                            target="_blank"
+                                        >
+                                            <GetApp />
+                                        </IconButton>
+                                    </>
+                                ),
                             },
                         ]}
                         data={tracks.map((track) => ({ ...track }))}

@@ -19,6 +19,7 @@ gql`
     fragment Track on Track {
         id
         createdAt
+        assetName
         fileName
         fileSize
         duration

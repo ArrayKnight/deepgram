@@ -10,6 +10,8 @@ export class Track implements Document {
     updatedAt?: Date
     uploadedBy: string
     albumId: string
+
+    @Field()
     assetName: string
 
     @Field()
