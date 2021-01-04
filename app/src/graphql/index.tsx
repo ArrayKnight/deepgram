@@ -107,7 +107,7 @@ export type Mutation = {
   __typename: 'Mutation';
   insertAlbum: Album;
   insertTrack: Track;
-  upsertUser: User;
+  insertUser: User;
 };
 
 
@@ -121,8 +121,8 @@ export type MutationInsertTrackArgs = {
 };
 
 
-export type MutationUpsertUserArgs = {
-  user: UserUpsertInput;
+export type MutationInsertUserArgs = {
+  user: UserInsertInput;
 };
 
 export type AlbumInsertInput = {
@@ -135,23 +135,41 @@ export type TrackInsertInput = {
 };
 
 
-export type UserUpsertInput = {
+export type UserInsertInput = {
   name?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   image?: Maybe<Scalars['String']>;
 };
 
-export type UpsertUserMutationVariables = Exact<{
-  user: UserUpsertInput;
+export type UserFragment = (
+  { __typename: 'User' }
+  & Pick<User, 'id' | 'name' | 'email' | 'image'>
+);
+
+export type CreateUserMutationVariables = Exact<{
+  user: UserInsertInput;
 }>;
 
 
-export type UpsertUserMutation = (
+export type CreateUserMutation = (
   { __typename: 'Mutation' }
   & { user: (
     { __typename: 'User' }
-    & Pick<User, 'id' | 'name' | 'email' | 'image'>
+    & UserFragment
   ) }
+);
+
+export type UserQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type UserQuery = (
+  { __typename: 'Query' }
+  & { user?: Maybe<(
+    { __typename: 'User' }
+    & UserFragment
+  )> }
 );
 
 export type AlbumQueryVariables = Exact<{
@@ -183,17 +201,6 @@ export type AlbumFragment = (
   )> }
 );
 
-export type AlbumsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AlbumsQuery = (
-  { __typename: 'Query' }
-  & { albums: Array<(
-    { __typename: 'Album' }
-    & AlbumFragment
-  )> }
-);
-
 export type CreateAlbumMutationVariables = Exact<{
   album: AlbumInsertInput;
 }>;
@@ -205,6 +212,17 @@ export type CreateAlbumMutation = (
     { __typename: 'Album' }
     & AlbumFragment
   ) }
+);
+
+export type AlbumsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AlbumsQuery = (
+  { __typename: 'Query' }
+  & { albums: Array<(
+    { __typename: 'Album' }
+    & AlbumFragment
+  )> }
 );
 
 export type TrackQueryVariables = Exact<{
@@ -239,6 +257,19 @@ export type TrackFragment = (
   )> }
 );
 
+export type CreateTrackMutationVariables = Exact<{
+  track: TrackInsertInput;
+}>;
+
+
+export type CreateTrackMutation = (
+  { __typename: 'Mutation' }
+  & { insertTrack: (
+    { __typename: 'Track' }
+    & TrackFragment
+  ) }
+);
+
 export type TracksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -253,19 +284,14 @@ export type TracksQuery = (
   )> }
 );
 
-export type CreateTrackMutationVariables = Exact<{
-  track: TrackInsertInput;
-}>;
-
-
-export type CreateTrackMutation = (
-  { __typename: 'Mutation' }
-  & { insertTrack: (
-    { __typename: 'Track' }
-    & TrackFragment
-  ) }
-);
-
+export const UserFragmentDoc = gql`
+    fragment User on User {
+  id
+  name
+  email
+  image
+}
+    `;
 export const AlbumFragmentDoc = gql`
     fragment Album on Album {
   id
@@ -300,41 +326,71 @@ export const TrackFragmentDoc = gql`
   }
 }
     `;
-export const UpsertUserDocument = gql`
-    mutation UpsertUser($user: UserUpsertInput!) {
-  user: upsertUser(user: $user) {
-    id
-    name
-    email
-    image
+export const CreateUserDocument = gql`
+    mutation CreateUser($user: UserInsertInput!) {
+  user: insertUser(user: $user) {
+    ...User
   }
 }
-    `;
-export type UpsertUserMutationFn = Apollo.MutationFunction<UpsertUserMutation, UpsertUserMutationVariables>;
+    ${UserFragmentDoc}`;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
 
 /**
- * __useUpsertUserMutation__
+ * __useCreateUserMutation__
  *
- * To run a mutation, you first call `useUpsertUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertUserMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [upsertUserMutation, { data, loading, error }] = useUpsertUserMutation({
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
  *   variables: {
  *      user: // value for 'user'
  *   },
  * });
  */
-export function useUpsertUserMutation(baseOptions?: Apollo.MutationHookOptions<UpsertUserMutation, UpsertUserMutationVariables>) {
-        return Apollo.useMutation<UpsertUserMutation, UpsertUserMutationVariables>(UpsertUserDocument, baseOptions);
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, baseOptions);
       }
-export type UpsertUserMutationHookResult = ReturnType<typeof useUpsertUserMutation>;
-export type UpsertUserMutationResult = Apollo.MutationResult<UpsertUserMutation>;
-export type UpsertUserMutationOptions = Apollo.BaseMutationOptions<UpsertUserMutation, UpsertUserMutationVariables>;
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const UserDocument = gql`
+    query User($email: String!) {
+  user(email: $email) {
+    ...User
+  }
+}
+    ${UserFragmentDoc}`;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, baseOptions);
+      }
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, baseOptions);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const AlbumDocument = gql`
     query Album($id: String!) {
   album(id: $id) {
@@ -375,6 +431,38 @@ export function useAlbumLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Albu
 export type AlbumQueryHookResult = ReturnType<typeof useAlbumQuery>;
 export type AlbumLazyQueryHookResult = ReturnType<typeof useAlbumLazyQuery>;
 export type AlbumQueryResult = Apollo.QueryResult<AlbumQuery, AlbumQueryVariables>;
+export const CreateAlbumDocument = gql`
+    mutation CreateAlbum($album: AlbumInsertInput!) {
+  insertAlbum(album: $album) {
+    ...Album
+  }
+}
+    ${AlbumFragmentDoc}`;
+export type CreateAlbumMutationFn = Apollo.MutationFunction<CreateAlbumMutation, CreateAlbumMutationVariables>;
+
+/**
+ * __useCreateAlbumMutation__
+ *
+ * To run a mutation, you first call `useCreateAlbumMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAlbumMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAlbumMutation, { data, loading, error }] = useCreateAlbumMutation({
+ *   variables: {
+ *      album: // value for 'album'
+ *   },
+ * });
+ */
+export function useCreateAlbumMutation(baseOptions?: Apollo.MutationHookOptions<CreateAlbumMutation, CreateAlbumMutationVariables>) {
+        return Apollo.useMutation<CreateAlbumMutation, CreateAlbumMutationVariables>(CreateAlbumDocument, baseOptions);
+      }
+export type CreateAlbumMutationHookResult = ReturnType<typeof useCreateAlbumMutation>;
+export type CreateAlbumMutationResult = Apollo.MutationResult<CreateAlbumMutation>;
+export type CreateAlbumMutationOptions = Apollo.BaseMutationOptions<CreateAlbumMutation, CreateAlbumMutationVariables>;
 export const AlbumsDocument = gql`
     query Albums {
   albums {
@@ -407,38 +495,6 @@ export function useAlbumsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Alb
 export type AlbumsQueryHookResult = ReturnType<typeof useAlbumsQuery>;
 export type AlbumsLazyQueryHookResult = ReturnType<typeof useAlbumsLazyQuery>;
 export type AlbumsQueryResult = Apollo.QueryResult<AlbumsQuery, AlbumsQueryVariables>;
-export const CreateAlbumDocument = gql`
-    mutation createAlbum($album: AlbumInsertInput!) {
-  insertAlbum(album: $album) {
-    ...Album
-  }
-}
-    ${AlbumFragmentDoc}`;
-export type CreateAlbumMutationFn = Apollo.MutationFunction<CreateAlbumMutation, CreateAlbumMutationVariables>;
-
-/**
- * __useCreateAlbumMutation__
- *
- * To run a mutation, you first call `useCreateAlbumMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateAlbumMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createAlbumMutation, { data, loading, error }] = useCreateAlbumMutation({
- *   variables: {
- *      album: // value for 'album'
- *   },
- * });
- */
-export function useCreateAlbumMutation(baseOptions?: Apollo.MutationHookOptions<CreateAlbumMutation, CreateAlbumMutationVariables>) {
-        return Apollo.useMutation<CreateAlbumMutation, CreateAlbumMutationVariables>(CreateAlbumDocument, baseOptions);
-      }
-export type CreateAlbumMutationHookResult = ReturnType<typeof useCreateAlbumMutation>;
-export type CreateAlbumMutationResult = Apollo.MutationResult<CreateAlbumMutation>;
-export type CreateAlbumMutationOptions = Apollo.BaseMutationOptions<CreateAlbumMutation, CreateAlbumMutationVariables>;
 export const TrackDocument = gql`
     query Track($id: String!) {
   track(id: $id) {
@@ -485,6 +541,38 @@ export function useTrackLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Trac
 export type TrackQueryHookResult = ReturnType<typeof useTrackQuery>;
 export type TrackLazyQueryHookResult = ReturnType<typeof useTrackLazyQuery>;
 export type TrackQueryResult = Apollo.QueryResult<TrackQuery, TrackQueryVariables>;
+export const CreateTrackDocument = gql`
+    mutation CreateTrack($track: TrackInsertInput!) {
+  insertTrack(track: $track) {
+    ...Track
+  }
+}
+    ${TrackFragmentDoc}`;
+export type CreateTrackMutationFn = Apollo.MutationFunction<CreateTrackMutation, CreateTrackMutationVariables>;
+
+/**
+ * __useCreateTrackMutation__
+ *
+ * To run a mutation, you first call `useCreateTrackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTrackMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTrackMutation, { data, loading, error }] = useCreateTrackMutation({
+ *   variables: {
+ *      track: // value for 'track'
+ *   },
+ * });
+ */
+export function useCreateTrackMutation(baseOptions?: Apollo.MutationHookOptions<CreateTrackMutation, CreateTrackMutationVariables>) {
+        return Apollo.useMutation<CreateTrackMutation, CreateTrackMutationVariables>(CreateTrackDocument, baseOptions);
+      }
+export type CreateTrackMutationHookResult = ReturnType<typeof useCreateTrackMutation>;
+export type CreateTrackMutationResult = Apollo.MutationResult<CreateTrackMutation>;
+export type CreateTrackMutationOptions = Apollo.BaseMutationOptions<CreateTrackMutation, CreateTrackMutationVariables>;
 export const TracksDocument = gql`
     query Tracks {
   albums {
@@ -521,38 +609,6 @@ export function useTracksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Tra
 export type TracksQueryHookResult = ReturnType<typeof useTracksQuery>;
 export type TracksLazyQueryHookResult = ReturnType<typeof useTracksLazyQuery>;
 export type TracksQueryResult = Apollo.QueryResult<TracksQuery, TracksQueryVariables>;
-export const CreateTrackDocument = gql`
-    mutation CreateTrack($track: TrackInsertInput!) {
-  insertTrack(track: $track) {
-    ...Track
-  }
-}
-    ${TrackFragmentDoc}`;
-export type CreateTrackMutationFn = Apollo.MutationFunction<CreateTrackMutation, CreateTrackMutationVariables>;
-
-/**
- * __useCreateTrackMutation__
- *
- * To run a mutation, you first call `useCreateTrackMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateTrackMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createTrackMutation, { data, loading, error }] = useCreateTrackMutation({
- *   variables: {
- *      track: // value for 'track'
- *   },
- * });
- */
-export function useCreateTrackMutation(baseOptions?: Apollo.MutationHookOptions<CreateTrackMutation, CreateTrackMutationVariables>) {
-        return Apollo.useMutation<CreateTrackMutation, CreateTrackMutationVariables>(CreateTrackDocument, baseOptions);
-      }
-export type CreateTrackMutationHookResult = ReturnType<typeof useCreateTrackMutation>;
-export type CreateTrackMutationResult = Apollo.MutationResult<CreateTrackMutation>;
-export type CreateTrackMutationOptions = Apollo.BaseMutationOptions<CreateTrackMutation, CreateTrackMutationVariables>;
 
       export interface PossibleTypesResultData {
         possibleTypes: {

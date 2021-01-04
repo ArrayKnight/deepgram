@@ -36,18 +36,18 @@ gql`
         }
     }
 
+    mutation CreateTrack($track: TrackInsertInput!) {
+        insertTrack(track: $track) {
+            ...Track
+        }
+    }
+
     query Tracks {
         albums {
             id
             name
         }
         tracks {
-            ...Track
-        }
-    }
-
-    mutation CreateTrack($track: TrackInsertInput!) {
-        insertTrack(track: $track) {
             ...Track
         }
     }

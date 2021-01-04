@@ -30,14 +30,14 @@ gql`
         }
     }
 
-    query Albums {
-        albums {
+    mutation CreateAlbum($album: AlbumInsertInput!) {
+        insertAlbum(album: $album) {
             ...Album
         }
     }
 
-    mutation createAlbum($album: AlbumInsertInput!) {
-        insertAlbum(album: $album) {
+    query Albums {
+        albums {
             ...Album
         }
     }

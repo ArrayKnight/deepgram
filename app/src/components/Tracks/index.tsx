@@ -64,14 +64,16 @@ export const Tracks = memo(
         function selectFile(event: ChangeEvent<HTMLInputElement>): void {
             const [file] = Array.from(event.target.files || new FileList())
 
+            if (fileInputRef.current) {
+                fileInputRef.current.value = ''
+            }
+
             if (file) {
                 setState((prev) => ({
                     ...prev,
                     file,
                 }))
             }
-
-            fileInputRef.current!.value = ''
         }
 
         function removeFile(): void {
@@ -86,16 +88,18 @@ export const Tracks = memo(
         }
 
         function submit(): void {
-            onCreateTrack({
-                albumId: state.albumId,
-                file: state.file!,
-            })
+            if (state.albumId && state.file) {
+                onCreateTrack({
+                    albumId: state.albumId,
+                    file: state.file,
+                })
 
-            setState({
-                open: false,
-                albumId: '',
-                file: null,
-            })
+                setState({
+                    open: false,
+                    albumId: '',
+                    file: null,
+                })
+            }
         }
 
         function TrackRowActions(

@@ -40,7 +40,7 @@ type Track {
 type Mutation {
   insertAlbum(album: AlbumInsertInput!): Album!
   insertTrack(track: TrackInsertInput!): Track!
-  upsertUser(user: UserUpsertInput!): User!
+  insertUser(user: UserInsertInput!): User!
 }
 
 input AlbumInsertInput {
@@ -55,7 +55,7 @@ input TrackInsertInput {
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
-input UserUpsertInput {
+input UserInsertInput {
   name: String
   email: String!
   image: String

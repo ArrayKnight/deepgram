@@ -41,7 +41,7 @@ export class UserFieldsArgs {
 }
 
 @InputType()
-export class UserUpsertInput implements Partial<User> {
+export class UserInsertInput implements Partial<User> {
     @Field({ nullable: true })
     name?: string
 

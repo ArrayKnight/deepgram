@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import { string } from 'yup'
 
-import { UserUpsertInput } from '~/graphql'
+import { UserInsertInput } from '~/graphql'
 import { ModalBox, ModalContent } from './styled'
 import { SignUpInProps } from './types'
 
@@ -25,7 +25,7 @@ const schemas = {
 }
 
 export const SignUpIn = memo(
-    ({ user, onSubmit }: SignUpInProps): ReactElement => {
+    ({ user, onSignUp, onSignIn }: SignUpInProps): ReactElement => {
         const [tabIndex, setTabIndex] = useState(0)
         const [state, setState] = useState({
             name: {
@@ -80,18 +80,22 @@ export const SignUpIn = memo(
         }
 
         function submit(): void {
-            onSubmit(
-                Object.entries(state).reduce(
-                    (acc: UserUpsertInput, [key, { value }]) => {
-                        if (value.trim()) {
-                            acc[key as keyof UserUpsertInput] = value.trim()
-                        }
+            if (signUp) {
+                onSignUp(
+                    Object.entries(state).reduce(
+                        (acc: UserInsertInput, [key, { value }]) => {
+                            if (value.trim()) {
+                                acc[key as keyof UserInsertInput] = value.trim()
+                            }
 
-                        return acc
-                    },
-                    { email: '' },
-                ),
-            )
+                            return acc
+                        },
+                        { email: '' },
+                    ),
+                )
+            } else {
+                onSignIn(state.email.value)
+            }
         }
 
         return (

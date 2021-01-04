@@ -6,7 +6,7 @@ import {
     User,
     UserFieldsArgs,
     UsersFieldsArgs,
-    UserUpsertInput,
+    UserInsertInput,
 } from '../schemas'
 
 @Service()
@@ -27,8 +27,8 @@ export class UserService {
         return await users.findOne<User>(query)
     }
 
-    async insert(user: UserUpsertInput): Promise<User> {
-        return await users.insert<UserUpsertInput>(user)
+    async insert(user: UserInsertInput): Promise<User> {
+        return await users.insert<UserInsertInput>(user)
     }
 
     async update(id: User['_id'], user: User): Promise<User> {

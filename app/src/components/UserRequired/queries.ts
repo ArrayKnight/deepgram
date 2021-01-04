@@ -1,12 +1,22 @@
 import { gql } from '@apollo/client'
 
 gql`
-    mutation UpsertUser($user: UserUpsertInput!) {
-        user: upsertUser(user: $user) {
-            id
-            name
-            email
-            image
+    fragment User on User {
+        id
+        name
+        email
+        image
+    }
+
+    mutation CreateUser($user: UserInsertInput!) {
+        user: insertUser(user: $user) {
+            ...User
+        }
+    }
+
+    query User($email: String!) {
+        user(email: $email) {
+            ...User
         }
     }
 `

@@ -12,7 +12,7 @@ import {
 import {
     User,
     UserFieldsArgs,
-    UserUpsertInput,
+    UserInsertInput,
     UsersFieldsArgs,
 } from '../schemas'
 import { UserService } from '../services'
@@ -29,17 +29,13 @@ export class UserResolver {
 
     // Mutations
     @Mutation(() => User)
-    async upsertUser(
-        @Arg('user') { name, email, image }: UserUpsertInput,
+    async insertUser(
+        @Arg('user') { name, email, image }: UserInsertInput,
     ): Promise<User> {
         const user = await this.userService.getOne({ email })
 
         if (user) {
-            return await this.userService.update(user._id, {
-                ...user,
-                name: name ? name : user.name,
-                image: image ? image : user.image,
-            })
+            throw new Error('User with this email is already registered')
         }
 
         return await this.userService.insert({

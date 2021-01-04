@@ -5,7 +5,9 @@ import { Maybe, User } from '~/graphql'
 
 const _userState = atom<Maybe<User>>({
     key: '_user',
-    default: null,
+    default: SSR
+        ? null
+        : (JSON.parse(localStorage.getItem('deepgram-user')) as Maybe<User>),
 })
 
 export const userState = selector<Maybe<User>>({
