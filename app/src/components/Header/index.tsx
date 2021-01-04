@@ -9,7 +9,14 @@ import {
 import { ContactSupport } from '@material-ui/icons'
 import React, { memo, MouseEvent, ReactElement, useState } from 'react'
 
-import { LogoButton, AvatarButton, NavBar } from './styled'
+import {
+    NavBar,
+    NavItems,
+    LogoButton,
+    Divider,
+    NavItem,
+    AvatarButton,
+} from './styled'
 import { HeaderProps } from './types'
 import { capitalCase } from 'change-case'
 
@@ -40,12 +47,17 @@ export const Header = memo(
             <AppBar color="default" elevation={0} position="static">
                 <Container maxWidth="xl">
                     <NavBar disableGutters={true}>
-                        <LogoButton href="/">
-                            <ContactSupport fontSize="large" />
-                            <Typography noWrap={true} variant="h5">
-                                Deepgram
-                            </Typography>
-                        </LogoButton>
+                        <NavItems>
+                            <LogoButton href="/">
+                                <ContactSupport fontSize="large" />
+                                <Typography noWrap={true} variant="h5">
+                                    Deepgram
+                                </Typography>
+                            </LogoButton>
+                            <Divider orientation="vertical" flexItem />
+                            <NavItem href="/albums">Albums</NavItem>
+                            <NavItem href="/tracks">Tracks</NavItem>
+                        </NavItems>
                         {user && (
                             <>
                                 <AvatarButton onClick={openUserMenu}>

@@ -1,5 +1,6 @@
 import {
     Button,
+    Chip,
     Fab,
     FormControl,
     IconButton,
@@ -21,7 +22,7 @@ import React, {
 } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { PageHeader } from '../PageHeader'
+import { Preface } from '../Preface'
 import { TableContainer, ModalBox, ModalContent, FileInput } from './styled'
 import { TracksProps, TracksState } from './types'
 
@@ -73,6 +74,13 @@ export const Tracks = memo(
             fileInputRef.current!.value = ''
         }
 
+        function removeFile(): void {
+            setState((prev) => ({
+                ...prev,
+                file: null,
+            }))
+        }
+
         function onFileSelectClick(): void {
             fileInputRef.current?.click()
         }
@@ -119,11 +127,11 @@ export const Tracks = memo(
 
         return (
             <>
-                <PageHeader title="Tracks">
+                <Preface title="Tracks">
                     <Fab color="secondary" size="small" onClick={toggleOpen}>
                         <Add />
                     </Fab>
-                </PageHeader>
+                </Preface>
                 <TableContainer maxWidth="xl">
                     <MaterialTable
                         columns={[
@@ -205,6 +213,12 @@ export const Tracks = memo(
                                 </Select>
                             </FormControl>
                             <FormControl required={true}>
+                                {state.file && (
+                                    <Chip
+                                        label={state.file.name}
+                                        onDelete={removeFile}
+                                    />
+                                )}
                                 <FileInput
                                     ref={fileInputRef}
                                     type="file"

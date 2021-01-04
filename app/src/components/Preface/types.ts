@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-export interface PageHeaderProps {
+export interface PrefaceProps {
     children?: ReactNode
     title: string
 }

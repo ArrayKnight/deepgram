@@ -6,6 +6,15 @@ module.exports = withBundleAnalyzer({
     env: {
         GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
     },
+    async redirects() {
+        return [
+            {
+                source: '/',
+                destination: '/tracks',
+                permanent: false,
+            },
+        ]
+    },
     async rewrites() {
         return [
             {

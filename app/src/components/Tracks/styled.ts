@@ -30,6 +30,10 @@ export const ModalContent = styled.form(
         .MuiFormControl-root {
             margin-bottom: ${theme.spacing(2)}px;
         }
+
+        .MuiChip-root {
+            margin-bottom: ${theme.spacing(1)}px;
+        }
     `,
 )
 

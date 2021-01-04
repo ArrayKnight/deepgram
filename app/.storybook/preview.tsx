@@ -1,4 +1,5 @@
-import { CssBaseline, StylesProvider, ThemeProvider } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core'
+import { StylesProvider, ThemeProvider } from '@material-ui/core/styles'
 import React from 'react'
 import { withNextRouter } from 'storybook-addon-next-router'
 import {

@@ -1,13 +1,13 @@
 import React, { memo, ReactElement } from 'react'
 
 import { Root, Meta } from './styled'
-import { PageHeaderProps } from './types'
+import { PrefaceProps } from './types'
 
-export * as PageHeaderStyled from './styled'
+export * as PrefaceStyled from './styled'
 export * from './types'
 
-export const PageHeader = memo(
-    ({ children, title }: PageHeaderProps): ReactElement => {
+export const Preface = memo(
+    ({ children, title }: PrefaceProps): ReactElement => {
         return (
             <Root maxWidth="xl">
                 <h1>{title}</h1>
@@ -17,4 +17,4 @@ export const PageHeader = memo(
     },
 )
 
-PageHeader.displayName = 'PageHeader'
+Preface.displayName = 'Preface'

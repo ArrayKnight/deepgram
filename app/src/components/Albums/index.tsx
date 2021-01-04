@@ -11,7 +11,7 @@ import React, {
 } from 'react'
 import { string } from 'yup'
 
-import { PageHeader } from '../PageHeader'
+import { Preface } from '../Preface'
 import { TableContainer, ModalBox, ModalContent } from './styled'
 import { AlbumsProps } from './types'
 
@@ -84,11 +84,11 @@ export const Albums = memo(
 
         return (
             <>
-                <PageHeader title="Albums">
+                <Preface title="Albums">
                     <Fab color="secondary" size="small" onClick={toggleOpen}>
                         <Add />
                     </Fab>
-                </PageHeader>
+                </Preface>
                 <TableContainer maxWidth="xl">
                     <MaterialTable
                         columns={[
