@@ -5,10 +5,10 @@ import React, { ReactElement } from 'react'
 
 import { getApolloClient, SSR } from '~/common'
 import { UserRequired } from '~/components'
-import { AlbumQuery, useAlbumQuery } from '~/graphql'
+import { AlbumDocument, AlbumQuery, useAlbumQuery } from '~/graphql'
 import { PageProps } from '~/types'
 
-const AlbumGql = gql`
+gql`
     query Album($id: String!) {
         album(id: $id) {
             id
@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps<
     const id = context.params?.id || ''
 
     await client.query<AlbumQuery>({
-        query: AlbumGql,
+        query: AlbumDocument,
         variables: { id },
     })
 

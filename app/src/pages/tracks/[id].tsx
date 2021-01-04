@@ -5,10 +5,10 @@ import React, { ReactElement } from 'react'
 
 import { getApolloClient, SSR } from '~/common'
 import { UserRequired } from '~/components'
-import { TrackQuery, useTrackQuery } from '~/graphql'
+import { TrackDocument, TrackQuery, useTrackQuery } from '~/graphql'
 import { PageProps } from '~/types'
 
-const TrackGql = gql`
+gql`
     query Track($id: String!) {
         track(id: $id) {
             id
@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps<
     const id = context.params?.id || ''
 
     await client.query<TrackQuery>({
-        query: TrackGql,
+        query: TrackDocument,
         variables: { id },
     })
 
