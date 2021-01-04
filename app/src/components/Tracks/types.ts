@@ -5,6 +5,7 @@ export interface TracksProps {
     tracks: TracksQuery['tracks']
     onTrackClick: (track: TracksQuery['tracks'][number]) => void
     onCreateTrack: (track: TrackInsertInput) => void
+    onDownloadTrack: (track: TracksQuery['tracks'][number]) => void
 }
 
 export interface TracksState {

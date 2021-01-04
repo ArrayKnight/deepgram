@@ -4,16 +4,15 @@ import { loremIpsum } from 'lorem-ipsum'
 import React, { ReactElement } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { Tracks, TracksProps } from '.'
 import { randomInt } from '~/common'
-import { AlbumsProps } from '~/components'
+import { Tracks, TracksProps } from '.'
 
 export default {
     title: 'Sections',
     decorators: [withActions],
 }
 
-function createAlbums(): AlbumsProps['albums'] {
+function createAlbums(): TracksProps['albums'] {
     return new Array(randomInt({ min: 3, max: 20 })).fill(null).map(() => ({
         __typename: 'Album',
         id: uuid(),
@@ -26,6 +25,12 @@ function createTracks(): TracksProps['tracks'] {
         __typename: 'Track',
         id: uuid(),
         createdAt: new Date().toISOString(),
+        assetName: `${paramCase(
+            loremIpsum({
+                units: 'words',
+                count: randomInt({ min: 1, max: 3 }),
+            }),
+        )}.${loremIpsum({ units: 'words', count: 1 })}`,
         fileName: `${paramCase(
             loremIpsum({
                 units: 'words',
@@ -64,5 +69,6 @@ export const tracks = (): ReactElement => (
         tracks={createTracks()}
         onTrackClick={action('onTrackClick')}
         onCreateTrack={action('onCreateTrack')}
+        onDownloadTrack={action('onDownloadTrack')}
     />
 )

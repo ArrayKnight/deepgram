@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client'
-import { GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import React, { ReactElement } from 'react'
 
@@ -28,6 +28,14 @@ const TrackGql = gql`
         }
     }
 `
+
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getStaticPaths: GetStaticPaths = async () => {
+    return {
+        paths: [],
+        fallback: true,
+    }
+}
 
 export const getStaticProps: GetStaticProps<
     PageProps<{ id: string }>,

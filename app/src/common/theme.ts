@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core'
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles'
 
 export const theme = responsiveFontSizes(
     createMuiTheme({

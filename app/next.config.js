@@ -1,7 +1,26 @@
-module.exports = {
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+    enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = withBundleAnalyzer({
     env: {
-        ASSETS_ENDPOINT: process.env.ASSETS_ENDPOINT,
         GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
+    },
+    async rewrites() {
+        return [
+            {
+                source: '/static/:asset',
+                destination: `${process.env.STATIC_ASSETS_BASE_URL}/:asset`,
+            },
+            {
+                source: '/api/download/:asset',
+                destination: `${process.env.DOWNLOAD_ENDPOINT}/:asset`,
+            },
+            {
+                source: '/api/graphql',
+                destination: process.env.GRAPHQL_ENDPOINT,
+            },
+        ]
     },
     webpack(config) {
         config.module.rules.push({
@@ -17,4 +36,4 @@ module.exports = {
 
         return config
     },
-}
+})

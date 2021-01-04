@@ -36,6 +36,10 @@ void (async () => {
 
     app.use('/assets', Express.static(path.join(__dirname, 'assets')))
 
+    app.get('/download/:asset', (req, res) => {
+        res.download(path.join(__dirname, `assets/${req.params.asset}`))
+    })
+
     app.use(
         graphqlUploadExpress({
             maxFileSize: 5e6, // 5MB

@@ -1,5 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
-import { CssBaseline, StylesProvider, ThemeProvider } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core'
+import { StylesProvider, ThemeProvider } from '@material-ui/core/styles'
 import type { AppProps } from 'next/app'
 import React, { ReactElement } from 'react'
 import { RecoilRoot, useRecoilState } from 'recoil'

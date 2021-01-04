@@ -21,7 +21,6 @@ import React, {
 } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { ASSETS_ENDPOINT } from '~/common'
 import { PageHeader } from '../PageHeader'
 import { TableContainer, ModalBox, ModalContent, FileInput } from './styled'
 import { TracksProps, TracksState } from './types'
@@ -35,6 +34,7 @@ export const Tracks = memo(
         tracks,
         onTrackClick,
         onCreateTrack,
+        onDownloadTrack,
     }: TracksProps): ReactElement => {
         const fileInputRef = createRef<HTMLInputElement>()
         const [state, setState] = useState<TracksState>({
@@ -88,6 +88,24 @@ export const Tracks = memo(
                 albumId: '',
                 file: null,
             })
+        }
+
+        function TrackRowActions(
+            track: TracksProps['tracks'][number],
+        ): ReactElement {
+            return (
+                <>
+                    <IconButton
+                        href={`static/${track.assetName}`}
+                        target="_blank"
+                    >
+                        <Speaker />
+                    </IconButton>
+                    <IconButton onClick={() => onDownloadTrack(track)}>
+                        <GetApp />
+                    </IconButton>
+                </>
+            )
         }
 
         function onRowClick(
@@ -146,23 +164,7 @@ export const Tracks = memo(
                                 filtering: false,
                                 sorting: false,
                                 type: 'numeric', // For alignment
-                                render: ({ assetName, fileName }) => (
-                                    <>
-                                        <IconButton
-                                            href={`${ASSETS_ENDPOINT}/${assetName}`}
-                                            target="_blank"
-                                        >
-                                            <Speaker />
-                                        </IconButton>
-                                        <IconButton
-                                            href={`${ASSETS_ENDPOINT}/${assetName}`}
-                                            download={fileName}
-                                            target="_blank"
-                                        >
-                                            <GetApp />
-                                        </IconButton>
-                                    </>
-                                ),
+                                render: TrackRowActions,
                             },
                         ]}
                         data={tracks.map((track) => ({ ...track }))}

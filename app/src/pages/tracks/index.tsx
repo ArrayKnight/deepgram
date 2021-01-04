@@ -1,4 +1,6 @@
 import { gql } from '@apollo/client'
+import { saveAs } from 'file-saver'
+import fetch from 'isomorphic-unfetch'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -82,6 +84,15 @@ export default function TracksPage(): ReactElement {
         void createTrack({ variables: { track } })
     }
 
+    async function onDownloadTrack({
+        assetName,
+        fileName,
+    }: TracksQuery['tracks'][number]): Promise<void> {
+        const response = await fetch(`api/download/${assetName}`)
+
+        saveAs(await response.blob(), fileName)
+    }
+
     return (
         <UserRequired>
             <Head>
@@ -92,6 +103,7 @@ export default function TracksPage(): ReactElement {
                 tracks={data?.tracks || []}
                 onTrackClick={onTrackClick}
                 onCreateTrack={onCreateTrack}
+                onDownloadTrack={onDownloadTrack}
             />
         </UserRequired>
     )
