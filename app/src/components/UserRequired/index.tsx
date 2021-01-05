@@ -2,6 +2,7 @@ import { useSnackbar } from 'notistack'
 import React, { memo, ReactElement, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
+import { isNull } from '~/common'
 import {
     Maybe,
     useCreateUserMutation,
@@ -12,7 +13,6 @@ import {
 import { userState } from '~/state'
 import { SignUpIn } from '../SignUpIn'
 import { UserRequiredProps } from './types'
-import { isNull } from '~/common'
 
 export const UserRequired = memo(
     ({ children }: UserRequiredProps): ReactElement => {
