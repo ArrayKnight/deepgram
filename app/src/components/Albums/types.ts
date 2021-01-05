@@ -1,8 +1,9 @@
-import { AlbumInsertInput, AlbumsQuery } from '~/graphql'
+import { AlbumsQuery } from '~/graphql'
 
-export interface AlbumsProps {
+import { CreateAlbumsProps } from '../CreateAlbum'
+
+export interface AlbumsProps extends CreateAlbumsProps {
     loading: boolean
     albums: AlbumsQuery['albums']
     onAlbumClick: (album: AlbumsQuery['albums'][number]) => void
-    onCreateAlbum: (album: AlbumInsertInput) => void
 }
