@@ -2,15 +2,17 @@
 
 ## Getting Started 🏃
 
-Create an `.env` file and copy the contents of `.env.example`
+**Required:** Create an `.env` file and copy the contents of `.env.example`
 
 ### `npm install && npm start`
 
-### [http://localhost:3000/](http://localhost:3000/)
+#### Server: [http://localhost:4000/](http://localhost:4000/)
+
+#### Client: [http://localhost:3000/](http://localhost:3000/)
 
 ## Instructions 📚
 
-See [requirements](/requirements.pdf)
+#### See [requirements](/requirements.pdf)
 
 ## Tooling 🧰
 
