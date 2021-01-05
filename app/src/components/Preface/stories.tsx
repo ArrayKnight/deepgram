@@ -8,7 +8,7 @@ export default {
     decorators: [withKnobs],
 }
 
-export const pageHeader = (): ReactElement => (
+export const preface = (): ReactElement => (
     <Preface title={text('title', 'Hello World')}>
         {text('children', 'Optional content')}
     </Preface>
