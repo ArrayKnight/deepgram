@@ -58,7 +58,7 @@ export const UserRequired = memo(
             }
 
             setSignInEmail('')
-        }, [setQueriedUser, setSignInEmail, queried])
+        }, [setQueriedUser, setSignInEmail, queried, enqueueSnackbar])
 
         useEffect(() => {
             if (queriedUser) {
