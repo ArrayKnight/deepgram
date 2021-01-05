@@ -115,10 +115,10 @@ export default function TracksPage(): ReactElement {
             enqueueSnackbar(queryError || createError, { variant: 'error' })
         }
 
-        if (queryLoading || createLoading) {
-            enqueueSnackbar('Loading...')
+        if (createLoading) {
+            enqueueSnackbar('Creating...')
         }
-    }, [enqueueSnackbar, queryError, queryLoading, createError, createLoading])
+    }, [enqueueSnackbar, queryError, createError, createLoading])
 
     return (
         <UserRequired>
