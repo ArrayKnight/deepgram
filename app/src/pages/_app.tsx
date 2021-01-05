@@ -28,7 +28,14 @@ function App({ Component, pageProps }: AppProps): ReactElement {
                     <StyledThemeProvider theme={theme}>
                         <CssBaseline />
                         <GlobalStyles />
-                        <SnackbarProvider maxSnack={3} preventDuplicate={true}>
+                        <SnackbarProvider
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            maxSnack={3}
+                            preventDuplicate={true}
+                        >
                             <Header user={user} onSignOut={signOut} />
                             <Component {...rest} />
                         </SnackbarProvider>

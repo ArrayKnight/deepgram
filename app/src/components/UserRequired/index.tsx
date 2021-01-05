@@ -12,6 +12,7 @@ import {
 import { userState } from '~/state'
 import { SignUpIn } from '../SignUpIn'
 import { UserRequiredProps } from './types'
+import { isNull } from '~/common'
 
 export const UserRequired = memo(
     ({ children }: UserRequiredProps): ReactElement => {
@@ -50,8 +51,14 @@ export const UserRequired = memo(
         useEffect(() => {
             if (queried?.user) {
                 setQueriedUser(queried.user)
+            } else if (isNull(queried?.user)) {
+                enqueueSnackbar('User not found with this email', {
+                    variant: 'warning',
+                })
             }
-        }, [setQueriedUser, queried])
+
+            setSignInEmail('')
+        }, [setQueriedUser, setSignInEmail, queried])
 
         useEffect(() => {
             if (queriedUser) {
@@ -62,8 +69,13 @@ export const UserRequired = memo(
 
             setCreatedUser(null)
             setQueriedUser(null)
-            setSignInEmail('')
-        }, [setUserState, createdUser, queriedUser])
+        }, [
+            setUserState,
+            setCreatedUser,
+            setQueriedUser,
+            createdUser,
+            queriedUser,
+        ])
 
         useEffect(() => {
             if (createError || queryError) {
