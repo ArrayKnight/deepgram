@@ -33,6 +33,7 @@ function App({ Component, pageProps }: AppProps): ReactElement {
                                 vertical: 'bottom',
                                 horizontal: 'center',
                             }}
+                            autoHideDuration={2500}
                             maxSnack={3}
                             preventDuplicate={true}
                         >

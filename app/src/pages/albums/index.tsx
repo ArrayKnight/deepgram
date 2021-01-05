@@ -87,7 +87,10 @@ export default function AlbumsPage(): ReactElement {
 
     useEffect(() => {
         if (queryError || createError) {
-            enqueueSnackbar(queryError || createError, { variant: 'error' })
+            enqueueSnackbar(queryError || createError, {
+                variant: 'error',
+                persist: true,
+            })
         }
 
         if (createLoading) {

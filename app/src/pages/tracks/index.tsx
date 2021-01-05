@@ -106,13 +106,19 @@ export default function TracksPage(): ReactElement {
 
             saveAs(await response.blob(), fileName)
         } catch (error) {
-            enqueueSnackbar((error as Error).message, { variant: 'error' })
+            enqueueSnackbar((error as Error).message, {
+                variant: 'error',
+                persist: true,
+            })
         }
     }
 
     useEffect(() => {
         if (queryError || createError) {
-            enqueueSnackbar(queryError || createError, { variant: 'error' })
+            enqueueSnackbar(queryError || createError, {
+                variant: 'error',
+                persist: true,
+            })
         }
 
         if (createLoading) {

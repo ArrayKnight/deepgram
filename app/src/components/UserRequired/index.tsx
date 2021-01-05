@@ -79,11 +79,18 @@ export const UserRequired = memo(
 
         useEffect(() => {
             if (createError || queryError) {
-                enqueueSnackbar(createError || queryError, { variant: 'error' })
+                enqueueSnackbar(createError || queryError, {
+                    variant: 'error',
+                    persist: true,
+                })
             }
 
-            if (createLoading || queryLoading) {
-                enqueueSnackbar('Loading...')
+            if (createLoading) {
+                enqueueSnackbar('Signing up...')
+            }
+
+            if (queryLoading) {
+                enqueueSnackbar('Signing in...')
             }
         }, [
             enqueueSnackbar,
