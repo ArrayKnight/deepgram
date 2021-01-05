@@ -17,6 +17,8 @@ I truly believe that APIs should be GraphQL moving forward. Its flexibility is a
 
 I really like the code first approach to defining a schema; it's far less code and the entire developer experience just feels easier/simpler. So I chose an easy to implement Typescript GraphQL Express server that I haven't used before but enjoyed learning
 
+The file uploading and static file hosting are all happening via Express/Apollo which is not the recommended solution for large scalable solutions. But it is the simplest solution for a small proof of concept project like this
+
 ## Scripts 💻
 
 **A valid `../.env` file is required for these to be successful**
