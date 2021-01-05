@@ -7,6 +7,7 @@ import { getApolloClient, SSR } from '~/common'
 import { UserRequired } from '~/components'
 import { TrackDocument, TrackQuery, useTrackQuery } from '~/graphql'
 import { PageProps } from '~/types'
+import { Container } from '@material-ui/core'
 
 gql`
     query Track($id: String!) {
@@ -62,6 +63,7 @@ export default function TrackPage({
 }: PageProps<{ id: string }>): ReactElement {
     const { data } = useTrackQuery({
         fetchPolicy: SSR ? 'cache-only' : 'cache-and-network',
+        nextFetchPolicy: 'network-only',
         variables: { id },
     })
 
@@ -70,8 +72,12 @@ export default function TrackPage({
             <Head>
                 <title>Track | Deepgram</title>
             </Head>
-            Track Detail
-            {JSON.stringify(data ?? null)}
+            <Container maxWidth="xl">
+                <h1>Track Detail</h1>
+                <pre>
+                    <code>{JSON.stringify(data ?? null)}</code>
+                </pre>
+            </Container>
         </UserRequired>
     )
 }

@@ -2,6 +2,7 @@ import { ApolloProvider } from '@apollo/client'
 import { CssBaseline } from '@material-ui/core'
 import { StylesProvider, ThemeProvider } from '@material-ui/core/styles'
 import type { AppProps } from 'next/app'
+import { SnackbarProvider } from 'notistack'
 import React, { ReactElement } from 'react'
 import { RecoilRoot, useRecoilState } from 'recoil'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
@@ -27,8 +28,10 @@ function App({ Component, pageProps }: AppProps): ReactElement {
                     <StyledThemeProvider theme={theme}>
                         <CssBaseline />
                         <GlobalStyles />
-                        <Header user={user} onSignOut={signOut} />
-                        <Component {...rest} />
+                        <SnackbarProvider maxSnack={3} preventDuplicate={true}>
+                            <Header user={user} onSignOut={signOut} />
+                            <Component {...rest} />
+                        </SnackbarProvider>
                     </StyledThemeProvider>
                 </ThemeProvider>
             </StylesProvider>

@@ -4,7 +4,8 @@ import fetch from 'isomorphic-unfetch'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { ReactElement } from 'react'
+import { useSnackbar } from 'notistack'
+import React, { ReactElement, useEffect } from 'react'
 
 import { getApolloClient, SSR } from '~/common'
 import { Tracks, UserRequired } from '~/components'
@@ -68,10 +69,20 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
 }
 
 export default function TracksPage(): ReactElement {
-    const { data, refetch } = useTracksQuery({
+    const { enqueueSnackbar } = useSnackbar()
+    const {
+        data,
+        error: queryError,
+        loading: queryLoading,
+        refetch,
+    } = useTracksQuery({
         fetchPolicy: SSR ? 'cache-only' : 'cache-and-network',
+        nextFetchPolicy: 'network-only',
     })
-    const [createTrack] = useCreateTrackMutation({
+    const [
+        createTrack,
+        { error: createError, loading: createLoading },
+    ] = useCreateTrackMutation({
         onCompleted: () => refetch(),
     })
     const router = useRouter()
@@ -88,10 +99,26 @@ export default function TracksPage(): ReactElement {
         assetName,
         fileName,
     }: TracksQuery['tracks'][number]): Promise<void> {
-        const response = await fetch(`api/download/${assetName}`)
+        enqueueSnackbar('Downloading...')
 
-        saveAs(await response.blob(), fileName)
+        try {
+            const response = await fetch(`api/download/${assetName}`)
+
+            saveAs(await response.blob(), fileName)
+        } catch (error) {
+            enqueueSnackbar((error as Error).message, { variant: 'error' })
+        }
     }
+
+    useEffect(() => {
+        if (queryError || createError) {
+            enqueueSnackbar(queryError || createError, { variant: 'error' })
+        }
+
+        if (queryLoading || createLoading) {
+            enqueueSnackbar('Loading...')
+        }
+    }, [enqueueSnackbar, queryError, queryLoading, createError, createLoading])
 
     return (
         <UserRequired>
@@ -99,6 +126,7 @@ export default function TracksPage(): ReactElement {
                 <title>Tracks | Deepgram</title>
             </Head>
             <Tracks
+                loading={queryLoading}
                 albums={data?.albums || []}
                 tracks={data?.tracks || []}
                 onTrackClick={onTrackClick}

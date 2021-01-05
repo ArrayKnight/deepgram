@@ -1,4 +1,5 @@
 import { action, withActions } from '@storybook/addon-actions'
+import { boolean, withKnobs } from '@storybook/addon-knobs'
 import { capitalCase, paramCase } from 'change-case'
 import { loremIpsum } from 'lorem-ipsum'
 import React, { ReactElement } from 'react'
@@ -9,7 +10,7 @@ import { Tracks, TracksProps } from '.'
 
 export default {
     title: 'Sections',
-    decorators: [withActions],
+    decorators: [withActions, withKnobs],
 }
 
 function createAlbums(): TracksProps['albums'] {
@@ -65,6 +66,7 @@ function createTracks(): TracksProps['tracks'] {
 
 export const tracks = (): ReactElement => (
     <Tracks
+        loading={boolean('loading', false)}
         albums={createAlbums()}
         tracks={createTracks()}
         onTrackClick={action('onTrackClick')}

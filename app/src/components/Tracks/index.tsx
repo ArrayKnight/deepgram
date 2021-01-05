@@ -31,6 +31,7 @@ export * from './types'
 
 export const Tracks = memo(
     ({
+        loading,
         albums,
         tracks,
         onTrackClick,
@@ -138,6 +139,7 @@ export const Tracks = memo(
                 </Preface>
                 <TableContainer maxWidth="xl">
                     <MaterialTable
+                        isLoading={loading}
                         columns={[
                             { title: 'File Name', field: 'fileName' },
                             {

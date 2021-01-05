@@ -24,7 +24,12 @@ const schema = string().matches(
 )
 
 export const Albums = memo(
-    ({ albums, onAlbumClick, onCreateAlbum }: AlbumsProps): ReactElement => {
+    ({
+        loading,
+        albums,
+        onAlbumClick,
+        onCreateAlbum,
+    }: AlbumsProps): ReactElement => {
         const [state, setState] = useState({
             open: false,
             name: {
@@ -91,6 +96,7 @@ export const Albums = memo(
                 </Preface>
                 <TableContainer maxWidth="xl">
                     <MaterialTable
+                        isLoading={loading}
                         columns={[
                             { title: 'Name', field: 'name' },
                             {

@@ -7,6 +7,8 @@ import {
     Typography,
 } from '@material-ui/core'
 import { ContactSupport } from '@material-ui/icons'
+import { capitalCase } from 'change-case'
+import Link from 'next/link'
 import React, { memo, MouseEvent, ReactElement, useState } from 'react'
 
 import {
@@ -18,7 +20,6 @@ import {
     AvatarButton,
 } from './styled'
 import { HeaderProps } from './types'
-import { capitalCase } from 'change-case'
 
 export * as HeaderStyled from './styled'
 export * from './types'
@@ -55,8 +56,12 @@ export const Header = memo(
                                 </Typography>
                             </LogoButton>
                             <Divider orientation="vertical" flexItem />
-                            <NavItem href="/albums">Albums</NavItem>
-                            <NavItem href="/tracks">Tracks</NavItem>
+                            <Link href="/albums" passHref={true}>
+                                <NavItem>Albums</NavItem>
+                            </Link>
+                            <Link href="/tracks" passHref={true}>
+                                <NavItem>Tracks</NavItem>
+                            </Link>
                         </NavItems>
                         {user && (
                             <>

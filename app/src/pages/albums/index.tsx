@@ -2,7 +2,8 @@ import { gql } from '@apollo/client'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { ReactElement } from 'react'
+import { useSnackbar } from 'notistack'
+import React, { ReactElement, useEffect } from 'react'
 
 import { getApolloClient, SSR } from '~/common'
 import { Albums, UserRequired } from '~/components'
@@ -58,10 +59,20 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
 }
 
 export default function AlbumsPage(): ReactElement {
-    const { data, refetch } = useAlbumsQuery({
+    const { enqueueSnackbar } = useSnackbar()
+    const {
+        data,
+        error: queryError,
+        loading: queryLoading,
+        refetch,
+    } = useAlbumsQuery({
         fetchPolicy: SSR ? 'cache-only' : 'cache-and-network',
+        nextFetchPolicy: 'network-only',
     })
-    const [createAlbum] = useCreateAlbumMutation({
+    const [
+        createAlbum,
+        { error: createError, loading: createLoading },
+    ] = useCreateAlbumMutation({
         onCompleted: () => refetch(),
     })
     const router = useRouter()
@@ -74,12 +85,23 @@ export default function AlbumsPage(): ReactElement {
         void createAlbum({ variables: { album } })
     }
 
+    useEffect(() => {
+        if (queryError || createError) {
+            enqueueSnackbar(queryError || createError, { variant: 'error' })
+        }
+
+        if (queryLoading || createLoading) {
+            enqueueSnackbar('Loading...')
+        }
+    }, [enqueueSnackbar, queryError, queryLoading, createError, createLoading])
+
     return (
         <UserRequired>
             <Head>
                 <title>Albums | Deepgram</title>
             </Head>
             <Albums
+                loading={queryLoading}
                 albums={data?.albums || []}
                 onAlbumClick={onAlbumClick}
                 onCreateAlbum={onCreateAlbum}

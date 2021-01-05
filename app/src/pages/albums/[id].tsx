@@ -7,6 +7,7 @@ import { getApolloClient, SSR } from '~/common'
 import { UserRequired } from '~/components'
 import { AlbumDocument, AlbumQuery, useAlbumQuery } from '~/graphql'
 import { PageProps } from '~/types'
+import { Container } from '@material-ui/core'
 
 gql`
     query Album($id: String!) {
@@ -56,6 +57,7 @@ export default function AlbumPage({
 }: PageProps<{ id: string }>): ReactElement {
     const { data } = useAlbumQuery({
         fetchPolicy: SSR ? 'cache-only' : 'cache-and-network',
+        nextFetchPolicy: 'network-only',
         variables: { id },
     })
 
@@ -64,8 +66,12 @@ export default function AlbumPage({
             <Head>
                 <title>Album | Deepgram</title>
             </Head>
-            Album Detail
-            {JSON.stringify(data ?? null)}
+            <Container maxWidth="xl">
+                <h1>Album Detail</h1>
+                <pre>
+                    <code>{JSON.stringify(data ?? null)}</code>
+                </pre>
+            </Container>
         </UserRequired>
     )
 }

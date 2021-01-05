@@ -1,4 +1,5 @@
 import { action, withActions } from '@storybook/addon-actions'
+import { boolean, withKnobs } from '@storybook/addon-knobs'
 import { capitalCase, paramCase } from 'change-case'
 import { loremIpsum } from 'lorem-ipsum'
 import React, { ReactElement } from 'react'
@@ -9,7 +10,7 @@ import { randomInt } from '~/common'
 
 export default {
     title: 'Sections',
-    decorators: [withActions],
+    decorators: [withActions, withKnobs],
 }
 
 function createAlbums(): AlbumsProps['albums'] {
@@ -37,6 +38,7 @@ function createAlbums(): AlbumsProps['albums'] {
 
 export const albums = (): ReactElement => (
     <Albums
+        loading={boolean('loading', false)}
         albums={createAlbums()}
         onAlbumClick={action('onAlbumClick')}
         onCreateAlbum={action('onCreateAlbum')}

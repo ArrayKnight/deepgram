@@ -1,6 +1,7 @@
 import { Maybe, TrackInsertInput, TracksQuery } from '~/graphql'
 
 export interface TracksProps {
+    loading: boolean
     albums: TracksQuery['albums']
     tracks: TracksQuery['tracks']
     onTrackClick: (track: TracksQuery['tracks'][number]) => void
