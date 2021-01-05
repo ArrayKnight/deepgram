@@ -24,6 +24,16 @@ import { CreateTracksProps, CreateTracksState } from './types'
 export * as CreateTracksStyled from './styled'
 export * from './types'
 
+export const CREATE_TRACK_TEST_IDS = Object.freeze({
+    trigger: 'CreateTrackTrigger',
+    modal: 'CreateTrackModal',
+    albumSelect: 'CreateTrackAlbumSelect',
+    albumOption: 'CreateTrackAlbumOption',
+    fileChip: 'CreateTrackFileChip',
+    fileInput: 'CreateTrackFileInput',
+    submit: 'CreateTrackSubmit',
+})
+
 export const CreateTrack = memo(
     ({ albums, onCreateTrack }: CreateTracksProps): ReactElement => {
         const fileInputRef = createRef<HTMLInputElement>()
@@ -93,7 +103,12 @@ export const CreateTrack = memo(
 
         return (
             <>
-                <Fab color="secondary" size="small" onClick={toggleOpen}>
+                <Fab
+                    color="secondary"
+                    size="small"
+                    onClick={toggleOpen}
+                    data-testid={CREATE_TRACK_TEST_IDS.trigger}
+                >
                     <Add />
                 </Fab>
                 <Modal
@@ -102,6 +117,7 @@ export const CreateTrack = memo(
                     aria-labelledby="Create Track"
                     aria-describedby="Track creation form"
                     onClose={toggleOpen}
+                    data-testid={CREATE_TRACK_TEST_IDS.modal}
                 >
                     <ModalBox>
                         <ModalContent>
@@ -114,9 +130,18 @@ export const CreateTrack = memo(
                                     label="Album"
                                     value={state.albumId}
                                     onChange={selectAlbum}
+                                    data-testid={
+                                        CREATE_TRACK_TEST_IDS.albumSelect
+                                    }
                                 >
                                     {albums.map(({ id, name }) => (
-                                        <MenuItem key={id} value={id}>
+                                        <MenuItem
+                                            key={id}
+                                            value={id}
+                                            data-testid={
+                                                CREATE_TRACK_TEST_IDS.albumOption
+                                            }
+                                        >
                                             {name}
                                         </MenuItem>
                                     ))}
@@ -127,6 +152,9 @@ export const CreateTrack = memo(
                                     <Chip
                                         label={state.file.name}
                                         onDelete={removeFile}
+                                        data-testid={
+                                            CREATE_TRACK_TEST_IDS.fileChip
+                                        }
                                     />
                                 )}
                                 <FileInput
@@ -135,6 +163,9 @@ export const CreateTrack = memo(
                                     accept="audio/*"
                                     required={true}
                                     onChange={selectFile}
+                                    data-testid={
+                                        CREATE_TRACK_TEST_IDS.fileInput
+                                    }
                                 />
                                 <Button
                                     color="default"
@@ -149,6 +180,7 @@ export const CreateTrack = memo(
                                 variant="contained"
                                 disabled={!state.albumId || !state.file}
                                 onClick={submit}
+                                data-testid={CREATE_TRACK_TEST_IDS.submit}
                             >
                                 Create
                             </Button>

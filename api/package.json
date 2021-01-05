@@ -5,7 +5,7 @@
         "commit": "npm run commit --prefix ..",
         "lint": "eslint \"!(dist|node_modules)/**/*.[jt]s?(x)\"",
         "start": "dotenv -e ../.env -- nodemon --ignore src/databases/*.json --exec ts-node src/index.ts",
-        "test": "jest --silent --passWithNoTests",
+        "test": "jest --passWithNoTests",
         "test:coverage": "jest --verbose --coverage --coverageDirectory=.coverage",
         "upgrade": "npm run upgrade:api --prefix .."
     },
