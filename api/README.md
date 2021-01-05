@@ -7,6 +7,15 @@
 -   [GraphQL](https://graphql.org/)
 -   [Apollo](https://www.apollographql.com/docs/apollo-server/)
 -   [ExpressJS](https://expressjs.com/)
+-   [NeDB](https://github.com/louischatriot/nedb)
+
+## Decisions 💭
+
+I wanted to use a database (even a simple local file based one) because this nicely helps define the service layer which ultimately could be swapped with an adapter to a more production grade database. This could have been done in memory with mocked asynchronicity, but felt like the right want to go
+
+I truly believe that APIs should be GraphQL moving forward. Its flexibility is amazing and the tooling for building applications on top makes things so great. So while I didn't meet the letter of the requirements, I believe that I have fulfilled the spirit of the requirements
+
+I really like the code first approach to defining a schema; it's far less code and the entire developer experience just feels easier/simpler. So I chose an easy to implement Typescript GraphQL Express server that I haven't used before but enjoyed learning
 
 ## Scripts 💻
 
