@@ -8,10 +8,15 @@
 -   [GraphQL](https://graphql.org/)
 -   [Apollo](https://www.apollographql.com/docs/react/)
 -   [Styled Components](https://styled-components.com/)
+-   [Material UI](https://material-ui.com/)
 
 ## Decisions 💭
 
+While Material UI may not be my first pick for all projects, it's an easy, familiar framework with lots of flexibility and prebuilt components
+
 I opted to use a local Storybook deployment tool (that can be setup as part of a CI/CD pipeline as well) and Github pages simply down to ease of implementation. In its current state, it requires a developer to run the deployment command, but ideally for a long-standing production application this would be automated to be kept up-to-date
+
+This application is comically insecure. You can easily look up all users and sign in as anybody. But the basic pattern of establishing a connection with the server and passing along an identifying token for server "authentication" and context is in place. The remainder of the proper authentication flow has been skipped for speed of development
 
 ## Scripts 💻
 
